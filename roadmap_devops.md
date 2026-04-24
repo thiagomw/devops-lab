@@ -65,9 +65,9 @@ Pratique cada item diretamente na VM via terminal:
 - [✅] Entender processos (`ps`, `top`, `kill`)
 
 **Git:**
-- [ ] `git init`, `add`, `commit`, `push`, `pull`
-- [ ] Criar e mergear branches
-- [ ] Escrever um `README.md` decente
+- [✅] `git init`, `add`, `commit`, `push`, `pull`
+- [✅] Criar e mergear branches
+- [✅] Escrever um `README.md` decente
 - [ ] Resolver um conflito simples de merge
 
 **Python:**
