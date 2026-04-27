@@ -21,6 +21,8 @@ servidores = ["web-01", "web-02", "db-01", "db-02", "cache-01"]
 
 # SUA SOLUÇÃO:
 
+# for servidor in servidores:
+#     print(servidor)
 
 # ------------------------------------------------------------
 
@@ -31,6 +33,9 @@ servidores = ["web-01", "web-02", "db-01", "db-02", "cache-01"]
 
 # SUA SOLUÇÃO:
 
+# for servidor in servidores:
+#     if servidor.startswith('web'):
+#         print(servidor)
 
 # ------------------------------------------------------------
 
@@ -41,6 +46,13 @@ servidores = ["web-01", "web-02", "db-01", "db-02", "cache-01"]
 
 # SUA SOLUÇÃO:
 
+servidores_db = []
+
+# for servidor in servidores:
+#     if servidor.startswith('db'):
+#         servidores_db.append(servidor)
+        
+# print(servidores_db)
 
 # ------------------------------------------------------------
 # NÍVEL 2 — Dicionários
@@ -54,13 +66,15 @@ servidores = ["web-01", "web-02", "db-01", "db-02", "cache-01"]
 servidor = {
     "nome": "web-01",
     "ip": "10.0.0.1",
-    "status": "online",
-    "cpu_percent": 45,
-    "memoria_percent": 60
+    "status": "offline",
+    "cpu_percent": 90,
+    "memoria_percent": 90
 }
 
 # SUA SOLUÇÃO:
 
+# for chave, valor in servidor.items():
+#     print(f"{chave}: {valor}")
 
 # ------------------------------------------------------------
 
@@ -73,6 +87,21 @@ servidor = {
 
 # SUA SOLUÇÃO:
 
+tem_alerta = False
+
+# if servidor['status'] == "online":
+#     print("O Servidor está operacional")
+
+# if servidor['cpu_percent'] > 80:
+#     print("ALERTA: Uso de CPU alto!")
+#     tem_alerta = True
+
+# if servidor['memoria_percent'] > 85:
+#     print("ALERTAL: Uso de memória alto!")
+#     tem_alerta = True
+
+# if not tem_alerta:
+#     print("Servidor saudável.")
 
 # ------------------------------------------------------------
 
@@ -90,6 +119,9 @@ frota = [
 
 # SUA SOLUÇÃO:
 
+# for servidor in frota:
+#     if servidor['status'] == "offline":
+#         print(servidor['nome'])
 
 # ------------------------------------------------------------
 # NÍVEL 3 — Funções
@@ -104,7 +136,19 @@ frota = [
 
 # SUA SOLUÇÃO:
 
+# def checar_status(dicionario):
 
+#     if dicionario['status'] == "offline":
+#         status = "ALERTA"
+    
+#     else:
+#         status = "OK"
+
+#     return status
+
+# for servidor in frota:
+#     resultado = checar_status(servidor)
+#     print(f"{servidor['nome']}: {resultado}")
 # ------------------------------------------------------------
 
 # Exercício 3.2
@@ -120,6 +164,22 @@ frota = [
 
 # SUA SOLUÇÃO:
 
+# def resumo_frota(servidores):
+
+#     total_servidores = len(servidores)
+#     servidores_online = 0
+#     servidores_offline = 0
+
+#     for servidor in servidores:
+#         if servidor['status'] == "online":
+#             servidores_online += 1
+#         else:
+#             servidores_offline += 1
+
+#     print(f"=== Resumo da Frota ===\nTotal de servidores: {total_servidores}\n Online: {servidores_online}\n Offline: {servidores_offline}")
+
+
+# resultado = resumo_frota(frota)
 
 # ------------------------------------------------------------
 
@@ -136,3 +196,36 @@ frota = [
 # Imprima os alertas encontrados ou "Nenhum alerta" se a lista estiver vazia.
 
 # SUA SOLUÇÃO:
+
+def checar_recursos(servidor):
+
+    alertas = []
+
+    if servidor['cpu_percent'] > 80:
+        alertas.append("Uso de CPU alto!")
+    
+    if servidor['memoria_percent'] > 85:
+        alertas.append("Uso de memória alto!")
+    
+    if servidor['status'] == "offline":
+        alertas.append("Servidor offline!")
+
+    return alertas
+
+resultado = checar_recursos(servidor)
+
+if not resultado:
+    print("Nenhum alerta!")
+else:
+    for alerta in resultado:
+        print(alerta)
+
+
+
+# servidor = {
+#     "nome": "web-01",
+#     "ip": "10.0.0.1",
+#     "status": "online",
+#     "cpu_percent": 45,
+#     "memoria_percent": 60
+# }
