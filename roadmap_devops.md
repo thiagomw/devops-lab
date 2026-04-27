@@ -68,7 +68,7 @@ Pratique cada item diretamente na VM via terminal:
 - [✅] `git init`, `add`, `commit`, `push`, `pull`
 - [✅] Criar e mergear branches
 - [✅] Escrever um `README.md` decente
-- [ ] Resolver um conflito simples de merge
+- [✅] Resolver um conflito simples de merge
 
 **Python:**
 - [ ] Funções, listas, dicionários, loops, condições
