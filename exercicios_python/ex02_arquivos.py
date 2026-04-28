@@ -26,6 +26,11 @@ import datetime
 
 # SUA SOLUÇÃO:
 
+servidores = ["web-01","web-02","db-01","db-02","cache-01"]
+
+with open("servidores.txt", "w") as f:
+    for servidor in servidores:
+        f.write(f"{servidor}\n")
 
 # ------------------------------------------------------------
 
@@ -37,6 +42,12 @@ import datetime
 
 # SUA SOLUÇÃO:
 
+data_hora = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+with open("log.txt", "w") as f:
+    for i in range(5):
+        f.write(f"{data_hora} INFO Servidor {servidores[i]} iniciado\n")
+
 
 # ------------------------------------------------------------
 
@@ -47,6 +58,10 @@ import datetime
 # Dica: use o modo "a" no open()
 
 # SUA SOLUÇÃO:
+
+with open("log.txt", "a") as f:
+    for i in range(3):
+        f.write(f"{data_hora} WARNING Servidor {servidores[i]} Uso de CPU acima de 85%\n")
 
 
 # ------------------------------------------------------------
@@ -60,6 +75,14 @@ import datetime
 
 # SUA SOLUÇÃO:
 
+with open("servidores.txt", "r") as f:
+    
+    linhas = f.readlines()
+    
+    for linha in linhas:
+        linha = linha.strip()
+        print(linha)
+    
 
 # ------------------------------------------------------------
 
@@ -69,6 +92,15 @@ import datetime
 
 # SUA SOLUÇÃO:
 
+with open("log.txt", "r") as f:
+
+    linhas = f.readlines()
+    
+    for linha in linhas:
+        linha = linha.strip()
+        
+        if "WARNING" in linha:
+            print(linha)
 
 # ------------------------------------------------------------
 
@@ -81,6 +113,20 @@ import datetime
 
 # SUA SOLUÇÃO:
 
+info = 0
+warning = 0
+
+with open("log.txt", "r") as f:
+
+    linhas = f.readlines()
+
+    for linha in linhas:
+        if "INFO" in linha:
+            info += 1
+        if "WARNING" in linha:
+            warning +=1
+
+    print(f"INFO:{info}\n WARNING:{warning}")
 
 # ------------------------------------------------------------
 # NÍVEL 3 — Combinando leitura e escrita
@@ -94,7 +140,12 @@ import datetime
 
 # SUA SOLUÇÃO:
 
-
+with open("servidores.txt", "r") as entrada, open("relatorio.txt", "w") as saida:
+    
+    for linha in entrada:
+        linha = linha.strip()
+        saida.write(f"Servidor: {linha} | Status: Online | Data: {data_hora}\n")
+         
 # ------------------------------------------------------------
 
 # Exercício 3.2 — Desafio
@@ -108,3 +159,26 @@ import datetime
 # Depois leia o arquivo e imprima só as linhas de ERROR.
 
 # SUA SOLUÇÃO:
+
+def gerar_log(nivel, mensagem):
+
+    with open("gerar_log.txt", "a") as f:
+        f.write(f"[{data_hora}] {nivel} {mensagem}\n")
+
+gerar_log("INFO", "Servidor Online.")
+gerar_log("WARNING", "CPU com uso acima de 85%!")
+gerar_log("ERROR", "Erro para inicializar os serviços!")
+gerar_log("INFO", "Servidor Offline")
+gerar_log("WARNING", "Uso de momória acima de 80%")
+gerar_log("ERROR", "texto da mensagem")
+
+
+with open("gerar_log.txt", "r") as f:
+
+    linhas = f.readlines()
+    
+    for linha in linhas:
+        linha = linha.strip()
+        
+        if "ERROR" in linha:
+            print(linha)

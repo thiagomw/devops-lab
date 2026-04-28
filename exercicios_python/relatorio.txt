@@ -1,0 +1,5 @@
+Servidor: web-01 | Status: Online | Data: 2026-04-28 22:53:30
+Servidor: web-02 | Status: Online | Data: 2026-04-28 22:53:30
+Servidor: db-01 | Status: Online | Data: 2026-04-28 22:53:30
+Servidor: db-02 | Status: Online | Data: 2026-04-28 22:53:30
+Servidor: cache-01 | Status: Online | Data: 2026-04-28 22:53:30
