@@ -71,7 +71,7 @@ Pratique cada item diretamente na VM via terminal:
 - [✅] Resolver um conflito simples de merge
 
 **Python:**
-- [ ] Funções, listas, dicionários, loops, condições
+- [✅] Funções, listas, dicionários, loops, condições
 - [ ] Ler e escrever arquivos
 - [ ] Usar os módulos `os`, `subprocess`, `socket`
 - [ ] Instalar e usar bibliotecas com `pip`
