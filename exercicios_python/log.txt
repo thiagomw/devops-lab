@@ -1,8 +1,8 @@
-2026-04-28 21:42:46.727595 INFO Servidor web-01 iniciado
-2026-04-28 21:42:46.727595 INFO Servidor web-02 iniciado
-2026-04-28 21:42:46.727595 INFO Servidor db-01 iniciado
-2026-04-28 21:42:46.727595 INFO Servidor db-02 iniciado
-2026-04-28 21:42:46.727595 INFO Servidor cache-01 iniciado
-2026-04-28 21:46:47.180667 WARNING Servidor web-01 Uso de CPU acima de 85%
-2026-04-28 21:46:47.180667 WARNING Servidor web-02 Uso de CPU acima de 85%
-2026-04-28 21:46:47.180667 WARNING Servidor db-01 Uso de CPU acima de 85%
+2026-04-29 02:20:12 INFO Servidor web-01 iniciado
+2026-04-29 02:20:12 INFO Servidor web-02 iniciado
+2026-04-29 02:20:12 INFO Servidor db-01 iniciado
+2026-04-29 02:20:12 INFO Servidor db-02 iniciado
+2026-04-29 02:20:12 INFO Servidor cache-01 iniciado
+2026-04-29 02:20:12 WARNING Servidor web-01 Uso de CPU acima de 85%
+2026-04-29 02:20:12 WARNING Servidor web-02 Uso de CPU acima de 85%
+2026-04-29 02:20:12 WARNING Servidor db-01 Uso de CPU acima de 85%

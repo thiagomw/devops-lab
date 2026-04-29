@@ -1,6 +1,0 @@
-[2026-04-28 23:38:10] INFO Servidor Online.
-[2026-04-28 23:38:10] WARNING CPU com uso acima de 85%!
-[2026-04-28 23:38:10] ERROR Erro para inicializar os serviços!
-[2026-04-28 23:38:10] INFO Servidor Offline
-[2026-04-28 23:38:10] WARNING Uso de momória acima de 80%
-[2026-04-28 23:38:10] ERROR texto da mensagem
