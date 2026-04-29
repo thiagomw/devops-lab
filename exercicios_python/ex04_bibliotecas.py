@@ -14,6 +14,7 @@
 import psutil
 import requests
 import datetime
+import time
 
 # ------------------------------------------------------------
 # BIBLIOTECA psutil — Monitoramento de recursos do sistema
@@ -25,6 +26,8 @@ import datetime
 
 # SUA SOLUÇÃO:
 
+uso_cpu = psutil.cpu_percent(interval=1)
+print(uso_cpu)
 
 # ------------------------------------------------------------
 
@@ -38,6 +41,8 @@ import datetime
 
 # SUA SOLUÇÃO:
 
+info_memoria = psutil.virtual_memory()
+print(f"=== Infomações Memória ===\nTotal: {info_memoria.total / (1024 ** 3):.2f}GB\nDisponível: {info_memoria.available / (1024 ** 3):.2f}GB\nPercentual usado: {info_memoria.percent}%")
 
 # ------------------------------------------------------------
 
@@ -51,6 +56,8 @@ import datetime
 
 # SUA SOLUÇÃO:
 
+info_disco = psutil.disk_usage('/')
+print(f"=== Infomações Disco ===\nTotal: {info_disco.total / (1024 ** 3):.2f}\nUsado: {info_disco.used / (1024 ** 3):.2f}\nLivre: {info_disco.free / (1024 ** 3):.2f}\nPercentual usado: {info_disco.percent}%")
 
 # ------------------------------------------------------------
 
@@ -62,6 +69,12 @@ import datetime
 
 # SUA SOLUÇÃO:
 
+processos = psutil.process_iter(['pid', 'name', 'memory_percent'])
+top_processos = sorted(processos, key=lambda p: p.info['memory_percent'], reverse=True)
+
+print("=== Top 5 processos mais utilizados no momento: ===")
+for processo in top_processos[:5]:
+    print(f"{processo.info['pid']} | {processo.info['name']} | {processo.info['memory_percent']}%")
 
 # ------------------------------------------------------------
 
@@ -75,10 +88,27 @@ import datetime
 # Chame a função 3 vezes com um time.sleep(2) entre cada chamada
 # pra ver os valores variando.
 
-import time
-
 # SUA SOLUÇÃO:
 
+def snapshot_sistema():
+
+    data_hora = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    
+    try:
+        uso_cpu = psutil.cpu_percent(interval=1)
+        info_memoria = psutil.virtual_memory()
+        info_disco = psutil.disk_usage('/')
+
+        with open("snapshots.log", "a", encoding="utf-8") as f:
+            f.write(f"[{data_hora}] CPU:{uso_cpu}% | MEM:{info_memoria.percent}% | DISCO:{info_disco.percent}%\n")
+    except Exception as e:
+        print(f"Erro inesperado: {e}")
+
+snapshot_sistema()
+time.sleep(2)
+snapshot_sistema()
+time.sleep(2)
+snapshot_sistema()
 
 # ------------------------------------------------------------
 # BIBLIOTECA requests — Fazendo requisições HTTP
@@ -91,6 +121,12 @@ import time
 
 # SUA SOLUÇÃO:
 
+url = "https://httpbin.org/get"
+try:
+    requisicao = requests.get(url)
+    print(requisicao.status_code)
+except Exception as e:
+    print(f"Erro inesperado: {e}")
 
 # ------------------------------------------------------------
 
@@ -102,6 +138,11 @@ import time
 
 # SUA SOLUÇÃO:
 
+try:
+    requisicao_json = requisicao.json()
+    print(requisicao_json.get("origin"))
+except Exception as e:
+    print(f"Erro inesperado: {e}")
 
 # ------------------------------------------------------------
 
@@ -123,6 +164,18 @@ urls = [
 
 # SUA SOLUÇÃO:
 
+def checar_url(url):
+    try:
+        requisicao_urls = requests.get(url)
+        if requisicao_urls.status_code == 200:
+            print(f"OK")
+        else:
+            print(f"ERRO: {requisicao_urls.status_code}")
+    except Exception as e:
+        print(f"INACESSÍVEL: {e}")
+
+for url in urls:
+    checar_url(url)
 
 # ------------------------------------------------------------
 
@@ -145,3 +198,23 @@ urls = [
 # Chame a função ao final do script.
 
 # SUA SOLUÇÃO:
+
+def relatorio_completo():
+
+    data_hora = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    
+    try:
+        url = "https://www.google.com"
+        uso_cpu = psutil.cpu_percent(interval=1)
+        info_memoria = psutil.virtual_memory()
+        info_disco = psutil.disk_usage('/')
+
+        requisicao_url = requests.get(url)
+        conectividade = "OK" if requisicao_url.status_code == 200 else "INACESSÍVEL"
+
+        with open("relatorio_final.txt", "a", encoding="utf-8") as f:
+            f.write(f"============================================\nRELATÓRIO DO SISTEMA — {data_hora}\n============================================\nCPU: {uso_cpu}%\nMemória: {info_memoria.percent}%\nDisco: {info_disco.percent}%\nConectividade Google: {conectividade}\n============================================")
+    except Exception as e:
+        print(f"Erro inesperado: {e}")
+
+relatorio_completo()
