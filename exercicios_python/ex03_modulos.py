@@ -12,6 +12,7 @@
 import os
 import subprocess
 import socket
+import datetime
 
 # ------------------------------------------------------------
 # MÓDULO os — Interagindo com o sistema de arquivos
@@ -24,7 +25,7 @@ import socket
 # SUA SOLUÇÃO:
 
 diretorio_atual = os.getcwd()
-# print(diretorio_atual)
+print(diretorio_atual)
 
 # ------------------------------------------------------------
 
@@ -37,8 +38,8 @@ diretorio_atual = os.getcwd()
 
 diretorio = "logs/2026/abril"
 
-# os.makedirs(diretorio, exist_ok=True)
-# print(f"Diretório {diretorio} já existe.")
+os.makedirs(diretorio, exist_ok=True)
+print(f"Diretório {diretorio} já existe.")
 
 # ------------------------------------------------------------
 
@@ -50,9 +51,9 @@ diretorio = "logs/2026/abril"
 # SUA SOLUÇÃO:
 
 arquivos = os.listdir(diretorio_atual)
-# for arquivo in arquivos:
-#     if arquivo.endswith('.py') or arquivo.endswith('.txt'):
-#         print(arquivo)
+for arquivo in arquivos:
+    if arquivo.endswith('.py') or arquivo.endswith('.txt'):
+        print(arquivo)
 
 # ------------------------------------------------------------
 
@@ -82,6 +83,8 @@ else:
 
 # SUA SOLUÇÃO:
 
+comando_uname = subprocess.run(["uname", "-a"], capture_output=True, text=True)
+print(comando_uname.stdout)
 
 # ------------------------------------------------------------
 
@@ -91,6 +94,8 @@ else:
 
 # SUA SOLUÇÃO:
 
+comando_df = subprocess.run(["df","-h"], capture_output=True, text=True)
+print(comando_df.stdout)
 
 # ------------------------------------------------------------
 
@@ -101,6 +106,12 @@ else:
 
 # SUA SOLUÇÃO:
 
+comando_free = subprocess.run(["free", "-h"], capture_output=True, text=True)
+
+linhas = comando_free.stdout.splitlines()
+for linha in linhas:
+    if "Mem" in linha:
+        print(linha)
 
 # ------------------------------------------------------------
 
@@ -116,6 +127,22 @@ else:
 
 # SUA SOLUÇÃO:
 
+def rodar_comando(comando):
+
+    resultado = comando.split()
+    
+    try:
+        resultado = subprocess.run(resultado, capture_output=True, text=True)
+        if resultado.returncode == 0:
+            print(resultado.stdout)
+
+    except Exception as e:
+        print(f"Erro inesperado: {e}")
+
+rodar_comando("ls -la")
+rodar_comando("df -h")
+rodar_comando("teste")
+
 
 # ------------------------------------------------------------
 # MÓDULO socket — Verificando conectividade
@@ -128,6 +155,13 @@ else:
 
 # SUA SOLUÇÃO:
 
+host = ("8.8.8.8", 53)
+
+try:
+    conexao = socket.create_connection(host, timeout=3)
+    print(f"Conexão com {host} bem-sucedida!")
+except Exception as e:
+    print(f"Erro inesperado: {e}")    
 
 # ------------------------------------------------------------
 
@@ -138,6 +172,17 @@ else:
 
 # SUA SOLUÇÃO:
 
+def checar_host(host, porta, timeout=3):
+
+    try:
+        conexao = socket.create_connection((host,porta), timeout=3)
+        print(f"Conexão com {host}:{porta} bem-sucedida!")
+        return True
+    except Exception as e:
+        print(f"Erro inesperado: {e}")  
+        return False
+
+checar_host("8.8.8.8",53)
 
 # ------------------------------------------------------------
 
@@ -165,3 +210,17 @@ hosts = [
 ]
 
 # SUA SOLUÇÃO:
+if __name__ == "__main__":
+    data_hora = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    try:
+        for host, porta in hosts:
+            resultado = checar_host(host, porta)
+            if resultado == True:
+                status = "up"
+            else:
+                status = "down"
+            with open("relatorio_conectividade.txt", "a") as f:
+                f.write(f"[{data_hora}] {host}:{porta} — {status.upper()}\n")
+    except Exception as e:
+        print(f"Erro inesperado: {e}")
