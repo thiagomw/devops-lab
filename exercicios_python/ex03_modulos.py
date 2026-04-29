@@ -23,6 +23,8 @@ import socket
 
 # SUA SOLUÇÃO:
 
+diretorio_atual = os.getcwd()
+# print(diretorio_atual)
 
 # ------------------------------------------------------------
 
@@ -33,6 +35,10 @@ import socket
 
 # SUA SOLUÇÃO:
 
+diretorio = "logs/2026/abril"
+
+# os.makedirs(diretorio, exist_ok=True)
+# print(f"Diretório {diretorio} já existe.")
 
 # ------------------------------------------------------------
 
@@ -43,6 +49,10 @@ import socket
 
 # SUA SOLUÇÃO:
 
+arquivos = os.listdir(diretorio_atual)
+# for arquivo in arquivos:
+#     if arquivo.endswith('.py') or arquivo.endswith('.txt'):
+#         print(arquivo)
 
 # ------------------------------------------------------------
 
@@ -54,6 +64,12 @@ import socket
 
 # SUA SOLUÇÃO:
 
+diretorio_existe = os.path.exists(diretorio)
+
+if diretorio_existe:
+    print("Diretório encontrado")
+else:
+    print("Diretório não encontrado")
 
 # ------------------------------------------------------------
 # MÓDULO subprocess — Rodando comandos do sistema
