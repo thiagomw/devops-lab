@@ -141,10 +141,10 @@ print(f"INFO:{info}\n WARNING:{warning}")
 # SUA SOLUÇÃO:
 
 with open("servidores.txt", "r") as entrada, open("relatorio.txt", "w") as saida:
-    
-    for linha in entrada:
-        linha = linha.strip()
-        saida.write(f"Servidor: {linha} | Status: Online | Data: {data_hora}\n")
+    servidores = entrada.readlines()
+    for servidor in servidores:
+        servidor = servidor.strip()
+        saida.write(f"Servidor:{servidor} | Status: Online | Data:{data_hora}\n")
          
 # ------------------------------------------------------------
 
