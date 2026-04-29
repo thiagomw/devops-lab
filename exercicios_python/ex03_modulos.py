@@ -175,7 +175,7 @@ except Exception as e:
 def checar_host(host, porta, timeout=3):
 
     try:
-        conexao = socket.create_connection((host,porta), timeout=3)
+        conexao = socket.create_connection((host,porta))
         print(f"Conexão com {host}:{porta} bem-sucedida!")
         return True
     except Exception as e:
@@ -215,12 +215,12 @@ if __name__ == "__main__":
 
     try:
         for host, porta in hosts:
-            resultado = checar_host(host, porta)
+            resultado = checar_host(host, porta,5)
             if resultado == True:
                 status = "up"
             else:
                 status = "down"
-            with open("relatorio_conectividade.txt", "a") as f:
+            with open("relatorio_conectividade.log", "a") as f:
                 f.write(f"[{data_hora}] {host}:{porta} — {status.upper()}\n")
     except Exception as e:
         print(f"Erro inesperado: {e}")
