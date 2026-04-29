@@ -1,7 +1,7 @@
 # 🚀 Roadmap DevOps — Do Service Desk ao DevOps Engineer
 **Perfil:** Formado em Redes (FIAP) · Python iniciante · Service Desk em empresa de IA  
 **Dedicação:** 1–2h/dia (dias intensos de 5h são seus dias de laboratório)  
-**Infraestrutura:** Oracle Cloud Free Tier · Ubuntu 22.04 LTS · VSCode + Remote SSH
+**Infraestrutura:** Oracle Cloud Free Tier + Ubuntu 22.04 LTS
 
 ---
 
@@ -15,34 +15,67 @@ Redes (teoria)       VM na Oracle Cloud      Containers reais      Logs centrali
 ```
 
 > **Como usar este roadmap:**  
-> Cada fase tem: material de estudo → checklist de habilidades → cenário prático na VM.  
+> Cada fase tem: material de estudo → checklist de habilidades → cenário prático em VM real.  
 > Estude o material, pratique os exercícios do checklist, depois execute o cenário.  
 > Versione tudo no GitHub desde o primeiro dia — isso vira seu portfólio.
 
 ---
 
-## ⚙️ Ambiente — Já Configurado ✅
+## ⚙️ Preparação — Antes de Começar (Semana 0)
 
-- [x] VM `devops-lab` criada na Oracle Cloud (Ubuntu 22.04 LTS)
-- [x] IP público atribuído (Ephemeral public IP)
-- [x] Acesso via SSH funcionando
-- [x] VSCode com Remote SSH configurado e conectado
+### 1. Crie sua VM gratuita na Oracle Cloud
 
-**Conectar na VM quando precisar:**
+A Oracle Cloud Free Tier oferece 2 VMs permanentemente gratuitas — sem prazo de expiração.
+
+**Passo a passo:**
+1. Acesse [cloud.oracle.com](https://cloud.oracle.com) e crie uma conta gratuita
+2. No painel, vá em **Compute → Instances → Create Instance**
+3. Configure:
+   - **Nome:** `devops-lab`
+   - **Image:** Ubuntu 22.04 LTS
+   - **Shape:** `VM.Standard.E2.1.Micro` (gratuito)
+   - **SSH Keys:** gere um par de chaves ou faça upload da sua chave pública
+4. Na seção **Primary VNIC:**
+   - Crie uma nova VCN (pode usar o nome gerado ou `devops-lab-vcn`)
+   - Em **Public IP type**, selecione **Ephemeral public IP** — sem isso a VM não terá IP público
+   - Se esquecer durante a criação: **Instance → Instance access → ephemeral public IP**
+5. Clique em **Create** — a VM sobe em ~2 minutos
+6. Anote o IP público da VM
+
+> 💡 **Sobre VCN e VNIC:**
+> - **VCN (Virtual Cloud Network)** → sua rede privada na nuvem, equivalente a uma LAN virtualizada
+> - **Subnet** → subdivisão da VCN, como subnets de redes tradicionais
+> - **VNIC (Virtual Network Interface Card)** → a placa de rede virtual da VM, equivalente a uma NIC física
+> - **IP Público** → o que você usa pra conectar via SSH da internet
+> - **IP Privado** → comunicação interna entre recursos na mesma VCN
+
+**Conectar via SSH:**
 ```bash
-ssh ubuntu@163.176.186.92 -i C:\Users\thiag\Downloads\ssh-key-2026-04-23.key
+ssh ubuntu@SEU_IP_PUBLICO -i sua_chave_privada.key
 ```
 
-Ou pelo VSCode: `Ctrl+Shift+P` → **Remote-SSH: Connect to Host** → **devops-lab**
+> No Windows, use o **Windows Terminal** ou **VSCode com extensão Remote SSH**.  
+> O Remote SSH abre uma nova janela do VSCode conectada à VM — é o comportamento esperado.  
+> O canto inferior esquerdo mostra `SSH: devops-lab` confirmando a conexão.  
+> Use `` Ctrl+` `` pra abrir o terminal da VM direto no VSCode.
+
+### 2. Crie sua conta no GitHub
+- Acesse [github.com](https://github.com) e crie uma conta
+- Crie um repositório chamado `devops-lab` — público
+- Configure o `.gitignore` desde o início (veja seção Git abaixo)
+
+### 3. Instale no seu computador local
+- [VSCode](https://code.visualstudio.com/)
+- [Git](https://git-scm.com/)
+- Python 3.11+ ([python.org](https://python.org))
+- Extensões VSCode: **Remote - SSH**, **Markdown Preview Enhanced**, **Markdown All in One**
 
 ---
 
-## 🗺️ FASE 1 — Linux, Git e Python na Prática (Meses 1–3)
+## 🗺️ FASE 1 — Linux, Git e Python na Prática ✅
 > *"Aprender as ferramentas que todo DevOps usa todo dia"*
 
 ### 📚 Material de Estudo
-
-Siga nesta ordem — estude em paralelo com o cenário prático:
 
 | Material | Tipo | Onde acessar | Foco |
 |---|---|---|---|
@@ -53,155 +86,322 @@ Siga nesta ordem — estude em paralelo com o cenário prático:
 
 ### ✅ Checklist de Habilidades
 
-Pratique cada item diretamente na VM via terminal:
-
-**Linux:**
-- [✅] Navegar entre diretórios (`cd`, `ls`, `pwd`)
-- [✅] Criar, mover, copiar e deletar arquivos (`mkdir`, `mv`, `cp`, `rm`)
-- [✅] Editar arquivos com `nano` ou `vim`
-- [✅] Entender e alterar permissões (`chmod`, `chown`)
-- [✅] Filtrar conteúdo de arquivos (`grep`, `cat`, `tail`, `head`)
-- [✅] Instalar pacotes com `apt`
-- [✅] Entender processos (`ps`, `top`, `kill`)
+**Linux — praticado na VM via SSH:**
+- [x] Navegar entre diretórios (`cd`, `ls`, `pwd`)
+- [x] Criar, mover, copiar e deletar arquivos (`mkdir`, `mv`, `cp`, `rm`)
+- [x] Editar arquivos com `nano`
+- [x] Entender e alterar permissões (`chmod`, `chown`)
+- [x] Filtrar conteúdo de arquivos (`grep`, `cat`, `tail`, `head`)
+- [x] Instalar pacotes com `apt`
+- [x] Entender processos (`ps`, `top`, `kill`)
+- [x] Rodar processos em background com `&`
+- [x] Usar operadores de redirecionamento `>` e `>>`
 
 **Git:**
-- [✅] `git init`, `add`, `commit`, `push`, `pull`
-- [✅] Criar e mergear branches
-- [✅] Escrever um `README.md` decente
-- [✅] Resolver um conflito simples de merge
+- [x] `git init`, `add`, `commit`, `push`, `pull`
+- [x] Criar e mergear branches
+- [x] Escrever um `README.md`
+- [x] Resolver um conflito simples de merge
+- [x] Configurar `.gitignore` corretamente
 
 **Python:**
-- [✅] Funções, listas, dicionários, loops, condições
-- [✅] Ler e escrever arquivos
-- [✅] Usar os módulos `os`, `subprocess`, `socket`
-- [ ] Instalar e usar bibliotecas com `pip`
+- [x] Funções, listas, dicionários, loops, condições
+- [x] Ler e escrever arquivos com `open()`
+- [x] Usar os módulos `os`, `subprocess`, `socket`
+- [x] Instalar e usar bibliotecas com `pip` (`psutil`, `requests`)
 
-**Bash:**
-- [ ] Variáveis, `if`, `for`, `while`
-- [ ] Passar argumentos para scripts (`$1`, `$2`)
-- [ ] Tornar script executável com `chmod +x`
+---
+
+### 📖 Referência Rápida — Linux
+
+#### Permissões
+```
+drwxr-xr-x
+↑ ↑↑↑ ↑↑↑ ↑↑↑
+│  │    │    └── outros
+│  │    └─────── grupo
+│  └──────────── dono
+└─────────────── tipo (d=diretório, -=arquivo, l=link)
+
+r = 4 (leitura)
+w = 2 (escrita)
+x = 1 (execução)
+```
+
+**Tabela chmod numérico:**
+
+| Número | Permissão | Quando usar |
+|---|---|---|
+| `777` | todos fazem tudo | Evitar — muito permissivo |
+| `755` | dono tudo, outros leem/executam | Diretórios, scripts |
+| `644` | dono lê/escreve, outros só leem | Arquivos comuns |
+| `700` | só o dono acessa | Diretórios com dados sensíveis |
+| `600` | só o dono lê/escreve | Chaves SSH, arquivos sensíveis |
+| `400` | só o dono lê | Chaves privadas |
+
+```bash
+chmod 755 arquivo.txt           # numérico
+chmod u+x arquivo.txt           # simbólico — adiciona execução pro dono
+chmod g-w arquivo.txt           # simbólico — remove escrita do grupo
+chown ubuntu:ubuntu arquivo.txt # muda dono e grupo
+```
+
+> ⚠️ A chave privada SSH deve ter permissão `400` ou `600` — o SSH recusa conexão se estiver mais aberto.
+
+#### Grupos
+```bash
+sudo groupadd desenvolvedores           # cria grupo
+sudo usermod -aG desenvolvedores user   # adiciona usuário ao grupo
+# -a = append (não remove de outros grupos)
+# -G = grupos suplementares
+# SEMPRE use -aG juntos — só -G remove o usuário de todos os outros grupos
+groups usuario                          # lista grupos do usuário
+```
+
+#### Processos
+```bash
+ps aux              # lista todos os processos
+top                 # monitor em tempo real (q pra sair, k pra matar)
+kill PID            # encerra processo
+kill -9 PID         # força encerramento
+sleep 60 &          # roda em background — terminal vai exibir o PID
+```
+
+#### tail e head
+```bash
+head -n 5 arquivo.log   # primeiras 5 linhas
+tail -n 5 arquivo.log   # últimas 5 linhas
+tail -f arquivo.log     # segue em tempo real — Ctrl+C pra sair
+```
+
+> 💡 `tail -f` é o mais usado no dia a dia pra monitorar logs de servidor em tempo real.
+
+#### Redirecionamento
+```bash
+echo "linha 1" > arquivo.txt   # sobrescreve (cria se não existir)
+echo "linha 2" >> arquivo.txt  # adiciona ao final (não apaga)
+```
+
+#### apt
+```bash
+sudo apt update            # atualiza lista (não instala nada)
+sudo apt upgrade -y        # instala atualizações
+sudo apt install pacote -y # instala
+sudo apt remove pacote     # remove
+```
+
+> 💡 Sempre rode `apt update` antes de instalar — garante a versão mais recente.  
+> O `-y` evita confirmação manual — útil em scripts automatizados.
+
+#### Scripts Bash
+```bash
+#!/bin/bash           # shebang — define o interpretador (primeira linha do script)
+chmod 755 script.sh   # dá permissão de execução
+./script.sh           # executa
+```
+
+#### Buscar ajuda sobre comandos
+```bash
+man chmod       # manual completo (setas pra navegar, / pra buscar, q pra sair)
+chmod --help    # resumo rápido
+whatis chmod    # descrição curta
+apropos disk    # busca comandos relacionados a uma palavra
+```
+
+---
+
+### 📖 Referência Rápida — Git
+
+```bash
+# Configuração inicial (uma vez só)
+git config --global user.name "Seu Nome"
+git config --global user.email "seu@email.com"
+# O e-mail precisa ser o mesmo do GitHub para vincular os commits ao perfil
+
+# Fluxo básico
+git clone https://github.com/usuario/repo.git
+git status                      # estado dos arquivos
+git add arquivo.py              # adiciona arquivo específico ao stage
+git add .                       # adiciona todos os arquivos modificados
+git commit -m "feat: mensagem"
+git push origin main
+git pull origin main
+
+# Branches
+git checkout -b nova-branch     # cria e troca
+git checkout main               # volta pra main
+git merge nova-branch           # merge na branch atual
+git branch -d nova-branch       # deleta branch local
+git log --oneline               # histórico resumido
+```
+
+> 💡 **Stage:** arquivos modificados → `git add` (stage) → `git commit` (histórico). O stage te dá controle sobre o que entra em cada commit — você pode commitar arquivos separados em commits diferentes.
+
+> ⚠️ O GitHub não aceita senha — use **Personal Access Token**: Settings → Developer Settings → Personal Access Tokens → Tokens Classic → marcar `repo` → usar no lugar da senha no push.
+
+#### .gitignore — Boa Prática Importante
+Arquivos gerados pelos scripts (`.txt`, `.log`) **não devem** ir pro repositório — só código fonte.
+
+```bash
+# .gitignore
+*.txt
+*.log
+__pycache__/
+*.pyc
+```
+
+```bash
+# Se já commitou arquivos indesejados:
+git rm --cached *.txt
+git rm --cached *.log
+git commit -m "chore: remove arquivos gerados do repositorio"
+git push origin main
+```
+
+---
+
+### 📖 Referência Rápida — Python
+
+#### Boas práticas aprendidas na prática
+
+```python
+# 1. Imports sempre no topo do arquivo
+import os, subprocess, socket, datetime, time
+import psutil, requests
+
+# 2. Separação de responsabilidades — função com uma responsabilidade só
+#    Loop fica FORA da função, não dentro
+def checar_host(host, porta, timeout=3):
+    try:
+        socket.create_connection((host, porta), timeout=timeout)
+        return True
+    except Exception:
+        return False
+
+for host, porta in lista_hosts:       # loop fora
+    resultado = checar_host(host, porta)
+
+# 3. if __name__ == "__main__" — só roda quando executado diretamente
+#    Se outro script importar este arquivo, esse bloco não executa
+if __name__ == "__main__":
+    checar_host("8.8.8.8", 53)
+
+# 4. encoding="utf-8" em todo open() — evita quebra de acentos
+with open("arquivo.txt", "a", encoding="utf-8") as f:
+    f.write("conteúdo\n")
+    # f.write() NÃO quebra linha automaticamente — use \n explícito
+    # print() JÁ quebra linha automaticamente
+
+# 5. .strip() precisa guardar o resultado
+linha = linha.strip()   # correto
+linha.strip()           # não faz nada — resultado é descartado
+
+# 6. Aspas dentro de f-string — defina a variável antes
+conectividade = "OK" if code == 200 else "INACESSÍVEL"
+f"Status: {conectividade}"   # correto
+# f"Status: {"OK" if ...}"   # SyntaxError em Python < 3.12
+
+# 7. subprocess — comando como lista, não string
+subprocess.run(["ls", "-la"], ...)    # correto
+subprocess.run(["ls -la"], ...)       # errado — tenta achar programa "ls -la"
+resultado.returncode == 0             # 0 = sucesso, outro valor = erro
+resultado.stdout                      # saída do comando
+
+# 8. Valor padrão em parâmetro de função
+def funcao(host, porta, timeout=3):   # timeout=3 é usado quando não passado
+    pass
+funcao("8.8.8.8", 53)       # timeout = 3 (padrão)
+funcao("8.8.8.8", 53, 10)   # timeout = 10 (sobrescreve o padrão)
+```
+
+#### Módulos essenciais
+```python
+# os
+os.getcwd()                         # diretório atual
+os.makedirs("pasta", exist_ok=True) # cria diretório recursivo
+os.listdir(".")                     # lista arquivos
+os.path.exists("pasta")            # verifica se existe
+
+# subprocess
+r = subprocess.run(["df", "-h"], capture_output=True, text=True)
+r.stdout.splitlines()               # divide saída em lista de linhas
+
+# psutil
+psutil.cpu_percent(interval=1)
+psutil.virtual_memory().percent
+psutil.virtual_memory().total / (1024**3)  # bytes → GB
+psutil.disk_usage('/').percent
+processos = psutil.process_iter(['pid', 'name', 'memory_percent'])
+top5 = sorted(processos, key=lambda p: p.info['memory_percent'], reverse=True)[:5]
+
+# requests
+r = requests.get("https://url.com")
+r.status_code                       # 200 = OK
+r.json().get("campo")               # acessa campo do JSON
+```
 
 ---
 
 ### 🟢 CENÁRIO 1 — Verificador de conectividade rodando na VM
 
-**O que você vai praticar:**
-Linux na VM, Python com `socket`, Git para versionar, `cron` para agendar execução automática.
-
-**O que o cenário constrói:**
-Um script que verifica se uma lista de hosts está respondendo, salva relatório em arquivo e roda automaticamente de tempos em tempos.
-
----
+**O que você vai praticar:** Linux na VM, Python com `socket`, Git, `cron`
 
 **Passo 1 — Conecte na VM e prepare o ambiente**
-
-Abra o terminal no VSCode (`Ctrl+`` `) já conectado na VM e rode:
-
 ```bash
-# Atualiza o sistema
+ssh ubuntu@SEU_IP_PUBLICO -i sua_chave.key
 sudo apt update && sudo apt upgrade -y
-
-# Instala Python e Git
 sudo apt install python3 python3-pip git -y
-
-# Confirma as versões
-python3 --version
-git --version
 ```
 
-**Passo 2 — Configure o Git com seus dados**
-```bash
-git config --global user.name "Seu Nome"
-git config --global user.email "seu@email.com"
-```
-
-**Passo 3 — Clone seu repositório na VM**
-
-Crie um repositório chamado `devops-lab` no GitHub (público), depois:
+**Passo 2 — Clone e prepare o projeto**
 ```bash
 git clone https://github.com/SEU_USUARIO/devops-lab.git
-cd devops-lab
-mkdir cenario-01
-cd cenario-01
+cd devops-lab && mkdir cenario-01 && cd cenario-01
 ```
 
-**Passo 4 — Crie o script**
-```bash
-nano check_hosts.py
-```
-
-Cole o conteúdo abaixo:
+**Passo 3 — Crie o script**
 ```python
 # check_hosts.py
-import socket
-import datetime
-import os
+import socket, datetime, os
 
 hosts = [
-    {"name": "Google DNS",     "host": "8.8.8.8",    "port": 53},
-    {"name": "Cloudflare DNS", "host": "1.1.1.1",    "port": 53},
-    {"name": "GitHub",         "host": "github.com", "port": 443},
-    {"name": "Oracle Cloud",   "host": "oracle.com", "port": 443},
+    {"name": "Google DNS",   "host": "8.8.8.8",    "port": 53},
+    {"name": "Cloudflare",   "host": "1.1.1.1",    "port": 53},
+    {"name": "GitHub",       "host": "github.com", "port": 443},
+    {"name": "Oracle Cloud", "host": "oracle.com", "port": 443},
 ]
 
-results = []
 timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+results = []
 
 for h in hosts:
     try:
         sock = socket.create_connection((h["host"], h["port"]), timeout=3)
         sock.close()
-        status = "UP"
-        icon = "OK"
+        status, icon = "UP", "✅"
     except (socket.timeout, ConnectionRefusedError, OSError):
-        status = "DOWN"
-        icon = "FALHOU"
+        status, icon = "DOWN", "❌"
 
-    result = f"[{timestamp}] {icon} | {h['name']} ({h['host']}:{h['port']}) — {status}"
+    result = f"[{timestamp}] {icon} {h['name']} ({h['host']}:{h['port']}) — {status}"
     results.append(result)
     print(result)
 
-log_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "check_report.txt")
-with open(log_file, "a", encoding="utf-8") as f:
+with open("check_report.txt", "a", encoding="utf-8") as f:
     f.write("\n".join(results) + "\n\n")
-
-print(f"\nRelatório salvo em check_report.txt")
 ```
 
-**Passo 5 — Rode e teste**
+**Passo 4 — Agende com cron**
 ```bash
 python3 check_hosts.py
-cat check_report.txt
-```
-
-**Passo 6 — Agende execução automática com cron**
-```bash
-# Abre o editor de cron
 crontab -e
-
-# Adicione esta linha para rodar a cada 5 minutos
-*/5 * * * * python3 /home/ubuntu/devops-lab/cenario-01/check_hosts.py
+# Adicione: */5 * * * * python3 /home/ubuntu/devops-lab/cenario-01/check_hosts.py
 ```
 
-Aguarde 5 minutos e verifique:
-```bash
-cat ~/devops-lab/cenario-01/check_report.txt
-```
-
-**Passo 7 — Versione no GitHub**
+**Passo 5 — Versione**
 ```bash
 cd ~/devops-lab
-git add .
-git commit -m "feat: cenario-01 - verificador de conectividade com cron"
-git push origin main
+git add . && git commit -m "feat: cenario-01 - verificador de conectividade" && git push origin main
 ```
-
-**O que você acabou de fazer na prática:**
-- Atualizou um servidor Linux real
-- Instalou dependências via `apt`
-- Escreveu e rodou Python num servidor remoto
-- Agendou execução automática com `cron`
-- Versionou tudo no GitHub
 
 ---
 
@@ -233,162 +433,30 @@ git push origin main
 
 ### 🟡 CENÁRIO 2 — Aplicação containerizada com pipeline CI/CD
 
-**O que você vai praticar:**
-Docker, docker-compose, GitHub Actions, testes automatizados com `unittest`.
-
-**O que o cenário constrói:**
-Uma aplicação Python dentro de um container Docker, com pipeline no GitHub Actions que roda os testes automaticamente a cada `push`.
-
----
-
 **Passo 1 — Instale Docker na VM**
 ```bash
-# Instala Docker
-curl -fsSL https://get.docker.com -o get-docker.sh
-sudo sh get-docker.sh
-
-# Adiciona seu usuário ao grupo docker
+curl -fsSL https://get.docker.com -o get-docker.sh && sudo sh get-docker.sh
 sudo usermod -aG docker ubuntu
-
-# Saia e reconecte pra aplicar o grupo
-exit
-```
-
-Reconecte na VM e confirme:
-```bash
-docker --version
+# Saia e reconecte — necessário pra aplicar o grupo docker
+exit && ssh ubuntu@SEU_IP -i sua_chave.key
 docker run hello-world
-```
-
-**Passo 2 — Instale docker-compose**
-```bash
 sudo apt install docker-compose -y
-docker-compose --version
 ```
 
-**Passo 3 — Prepare a estrutura do projeto**
+**Passo 2 — Crie o projeto**
 ```bash
-cd ~/devops-lab
-mkdir cenario-02
-cd cenario-02
+cd ~/devops-lab && mkdir cenario-02 && cd cenario-02
 ```
 
-**Passo 4 — Crie a aplicação**
-```bash
-nano monitor.py
-```
-```python
-# monitor.py
-import psutil
-import datetime
+Crie `monitor.py`, `test_monitor.py`, `Dockerfile` e `.github/workflows/ci.yml` conforme estrutura do roadmap.
 
-def coletar_metricas():
-    return {
-        "timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-        "cpu_percent": psutil.cpu_percent(interval=1),
-        "memoria_percent": psutil.virtual_memory().percent,
-        "disco_percent": psutil.disk_usage('/').percent,
-    }
-
-if __name__ == "__main__":
-    metricas = coletar_metricas()
-    for chave, valor in metricas.items():
-        print(f"{chave}: {valor}")
-```
-
-**Passo 5 — Crie os testes**
-```bash
-nano test_monitor.py
-```
-```python
-# test_monitor.py
-import unittest
-from monitor import coletar_metricas
-
-class TestMonitor(unittest.TestCase):
-    def test_retorna_dicionario(self):
-        resultado = coletar_metricas()
-        self.assertIsInstance(resultado, dict)
-
-    def test_chaves_presentes(self):
-        resultado = coletar_metricas()
-        self.assertIn("cpu_percent", resultado)
-        self.assertIn("memoria_percent", resultado)
-        self.assertIn("disco_percent", resultado)
-
-    def test_valores_validos(self):
-        resultado = coletar_metricas()
-        self.assertTrue(0 <= resultado["cpu_percent"] <= 100)
-        self.assertTrue(0 <= resultado["memoria_percent"] <= 100)
-        self.assertTrue(0 <= resultado["disco_percent"] <= 100)
-
-if __name__ == "__main__":
-    unittest.main()
-```
-
-**Passo 6 — Crie o Dockerfile**
-```bash
-nano Dockerfile
-```
-```dockerfile
-FROM python:3.11-slim
-WORKDIR /app
-COPY . .
-RUN pip install psutil
-CMD ["python", "monitor.py"]
-```
-
-**Passo 7 — Build e teste o container**
+**Passo 3 — Build e teste**
 ```bash
 docker build -t meu-monitor .
 docker run meu-monitor
+git add . && git commit -m "feat: cenario-02 - monitor containerizado com CI/CD" && git push origin main
+# GitHub → aba Actions → veja o pipeline rodar em tempo real
 ```
-
-**Passo 8 — Crie o pipeline no GitHub Actions**
-
-No terminal da VM, dentro do repositório:
-```bash
-cd ~/devops-lab
-mkdir -p .github/workflows
-nano .github/workflows/ci.yml
-```
-```yaml
-name: CI — Testa o monitor
-
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-
-jobs:
-  test:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout do código
-        uses: actions/checkout@v3
-
-      - name: Instala Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.11'
-
-      - name: Instala dependências
-        run: pip install psutil
-
-      - name: Roda os testes
-        run: python -m unittest test_monitor.py -v
-```
-
-**Passo 9 — Versione e observe o pipeline rodar**
-```bash
-git add .
-git commit -m "feat: cenario-02 - monitor containerizado com CI/CD"
-git push origin main
-```
-
-Acesse seu repositório no GitHub → aba **Actions** → veja o pipeline rodar em tempo real.
 
 ---
 
@@ -397,226 +465,96 @@ Acesse seu repositório no GitHub → aba **Actions** → veja o pipeline rodar 
 
 ### 📚 Material de Estudo
 
-| Material | Tipo | Onde acessar | Foco |
-|---|---|---|---|
-| TechWorld with Nana — Prometheus | YouTube gratuito | Buscar "Prometheus Tutorial TechWorld Nana" | Playlist completa |
-| Grafana Getting Started | Docs oficiais | [grafana.com/docs/grafana/latest/getting-started](https://grafana.com/docs/grafana/latest/getting-started) | Setup e primeiros dashboards |
-| Prometheus Docs | Docs oficiais | [prometheus.io/docs/introduction/overview](https://prometheus.io/docs/introduction/overview) | Conceitos e configuração |
-| Loki Getting Started | Docs oficiais | [grafana.com/docs/loki/latest/get-started](https://grafana.com/docs/loki/latest/get-started) | Logs centralizados |
+| Material | Tipo | Onde acessar |
+|---|---|---|
+| TechWorld with Nana — Prometheus | YouTube gratuito | Buscar "Prometheus Tutorial TechWorld Nana" |
+| Grafana Getting Started | Docs oficiais | [grafana.com/docs](https://grafana.com/docs) |
+| Prometheus Docs | Docs oficiais | [prometheus.io/docs](https://prometheus.io/docs) |
 
 ### ✅ Checklist de Habilidades
 
 - [ ] Entender o modelo pull do Prometheus (scraping)
 - [ ] Expor métricas no formato Prometheus via Python
-- [ ] Configurar targets no `prometheus.yml`
 - [ ] Subir Prometheus + Grafana via docker-compose
 - [ ] Criar dashboard no Grafana com métricas reais
-- [ ] Configurar alertas por threshold no Prometheus
-- [ ] Centralizar logs com Loki + Promtail
+- [ ] Configurar alertas por threshold
 
 ---
 
 ### 🔴 CENÁRIO 3 — Stack completa de monitoramento na VM
 
-**O que você vai praticar:**
-`prometheus_client` em Python, docker-compose com múltiplos serviços, Grafana na prática.
+Stack: app Python expondo métricas → Prometheus coletando → Grafana visualizando.
 
-**O que o cenário constrói:**
-Uma aplicação que expõe métricas reais da VM, coletadas pelo Prometheus e visualizadas no Grafana — acessíveis pelo browser.
+**Portas a liberar no firewall da Oracle Cloud:**
+- Networking → VCN → Security Lists → Ingress Rules → TCP `8000`, `9090`, `3000`
 
----
-
-**Passo 1 — Prepare o ambiente**
 ```bash
-cd ~/devops-lab
-mkdir cenario-03
-cd cenario-03
-pip3 install prometheus_client psutil
-```
-
-**Passo 2 — Crie a aplicação que expõe métricas**
-```bash
-nano app_metricas.py
-```
-```python
-# app_metricas.py
-from prometheus_client import start_http_server, Gauge
-import psutil
-import time
-
-cpu_gauge   = Gauge('vm_cpu_percent',     'Uso de CPU da VM em %')
-mem_gauge   = Gauge('vm_memoria_percent', 'Uso de memória da VM em %')
-disco_gauge = Gauge('vm_disco_percent',   'Uso de disco da VM em %')
-
-def coletar():
-    cpu_gauge.set(psutil.cpu_percent(interval=1))
-    mem_gauge.set(psutil.virtual_memory().percent)
-    disco_gauge.set(psutil.disk_usage('/').percent)
-
-if __name__ == '__main__':
-    start_http_server(8000)
-    print("Metricas disponiveis em http://localhost:8000/metrics")
-    while True:
-        coletar()
-        time.sleep(5)
-```
-
-**Passo 3 — Crie o Dockerfile**
-```bash
-nano Dockerfile
-```
-```dockerfile
-FROM python:3.11-slim
-WORKDIR /app
-COPY app_metricas.py .
-RUN pip install prometheus_client psutil
-CMD ["python", "app_metricas.py"]
-```
-
-**Passo 4 — Crie o docker-compose**
-```bash
-nano docker-compose.yml
-```
-```yaml
-version: '3.8'
-
-services:
-  app:
-    build: .
-    ports:
-      - "8000:8000"
-    container_name: app-metricas
-
-  prometheus:
-    image: prom/prometheus
-    ports:
-      - "9090:9090"
-    volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
-    container_name: prometheus
-
-  grafana:
-    image: grafana/grafana
-    ports:
-      - "3000:3000"
-    environment:
-      - GF_SECURITY_ADMIN_PASSWORD=admin123
-    container_name: grafana
-```
-
-**Passo 5 — Crie o prometheus.yml**
-```bash
-nano prometheus.yml
-```
-```yaml
-global:
-  scrape_interval: 5s
-
-scrape_configs:
-  - job_name: 'app-metricas'
-    static_configs:
-      - targets: ['app:8000']
-```
-
-**Passo 6 — Libere as portas no firewall da Oracle Cloud**
-
-Na Oracle Cloud: **Networking → Virtual Cloud Networks → sua VCN → Security Lists → Ingress Rules**
-
-Adicione regras para:
-- Porta `8000` — Protocol TCP — Source `0.0.0.0/0`
-- Porta `9090` — Protocol TCP — Source `0.0.0.0/0`
-- Porta `3000` — Protocol TCP — Source `0.0.0.0/0`
-
-Depois libere também no firewall da própria VM:
-```bash
+# Também libera no firewall da VM
 sudo iptables -I INPUT -p tcp --dport 3000 -j ACCEPT
 sudo iptables -I INPUT -p tcp --dport 9090 -j ACCEPT
 sudo iptables -I INPUT -p tcp --dport 8000 -j ACCEPT
-```
 
-**Passo 7 — Suba a stack**
-```bash
 docker-compose up --build -d
 ```
 
-**Acesse pelo browser:**
-- Métricas brutas: `http://163.176.186.92:8000/metrics`
-- Prometheus: `http://163.176.186.92:9090`
-- Grafana: `http://163.176.186.92:3000` (admin / admin123)
-
-**Passo 8 — Configure o Grafana**
-1. Acesse o Grafana no browser
-2. Vá em **Configuration → Data Sources → Add data source**
-3. Escolha **Prometheus**, URL: `http://prometheus:9090`
-4. Clique em **Save & Test**
-5. Vá em **Dashboards → New Dashboard → Add visualization**
-6. No campo de query digite: `vm_cpu_percent`
-7. Repita para `vm_memoria_percent` e `vm_disco_percent`
-
-**Passo 9 — Versione**
-```bash
-cd ~/devops-lab
-git add .
-git commit -m "feat: cenario-03 - stack prometheus + grafana na VM"
-git push origin main
-```
+Acesse: `http://SEU_IP:3000` (Grafana) → Data Sources → Prometheus → `http://prometheus:9090`
 
 ---
 
-## 🗺️ FASE 4 — Kubernetes e Infraestrutura como Código (Meses 12–18)
+## 🗺️ FASE 4 — Kubernetes e IaC (Meses 12–18)
 > *"Orquestrar serviços e provisionar infra com código"*
 
 ### 📚 Material de Estudo
 
-| Material | Tipo | Onde acessar | Foco |
-|---|---|---|---|
-| TechWorld with Nana — Kubernetes | YouTube gratuito | Buscar "Kubernetes Tutorial for Beginners TechWorld Nana" | Playlist completa |
-| Terraform Getting Started | Docs oficiais | [developer.hashicorp.com/terraform/tutorials](https://developer.hashicorp.com/terraform/tutorials) | Tutoriais AWS ou OCI |
-| KodeKloud | Plataforma (tem free) | [kodekloud.com](https://kodekloud.com) | Labs de Kubernetes e Terraform |
-| Killer.sh | Plataforma | [killer.sh](https://killer.sh) | Simulados de certificação CKA |
+| Material | Tipo | Onde acessar |
+|---|---|---|
+| TechWorld with Nana — Kubernetes | YouTube gratuito | Buscar "Kubernetes Tutorial TechWorld Nana" |
+| Terraform Getting Started | Docs oficiais | [developer.hashicorp.com/terraform/tutorials](https://developer.hashicorp.com/terraform/tutorials) |
+| KodeKloud | Plataforma | [kodekloud.com](https://kodekloud.com) |
 
 ### ✅ Checklist de Habilidades
 
 - [ ] Instalar e usar `kubectl`
 - [ ] Entender Pods, Deployments, Services, ConfigMaps
-- [ ] Subir uma aplicação no Minikube localmente
+- [ ] Subir aplicação no Minikube localmente
 - [ ] Escrever manifests YAML do Kubernetes
-- [ ] Entender o conceito de IaC (Infrastructure as Code)
 - [ ] Escrever um `main.tf` básico no Terraform
 - [ ] Provisionar uma VM via Terraform
 
-> O cenário desta fase será detalhado conforme você avança nas anteriores. Kubernetes tem uma curva mais acentuada e faz mais sentido construir em cima de uma base sólida de Docker e Linux.
+> O cenário desta fase será detalhado conforme você avança nas anteriores.
 
 ---
 
 ## 💼 Como Aproveitar Sua Posição na LTM/ADM
 
-Seu ambiente tem processos consolidados — e isso é bom pra você de outra forma:
+Seu ambiente tem processos consolidados (ServiceNow, alertas estruturados, equipes especializadas). O valor do trabalho atual é observar e absorver contexto:
 
-1. **Observe como os incidentes de infra são tratados** — você vê o resultado (chamado resolvido), tente entender o que a equipe de N2/N3 fez.
-2. **Anote termos técnicos** que aparecem nos chamados e alertas — pesquise depois. Você já está exposto ao vocabulário do ambiente.
-3. **Aproxime-se dos times de infra e cloud** — demonstre interesse genuíno no trabalho deles.
-4. **Seu GitHub é seu portfólio** — quando aparecer uma oportunidade interna, você tem algo concreto pra mostrar.
+1. **Observe como os incidentes de infra são tratados** — você vê o resultado, tente entender o que N2/N3 fez
+2. **Anote termos técnicos** que aparecem nos chamados — pesquise depois
+3. **Aproxime-se dos times de infra e cloud** — demonstre interesse genuíno
+4. **Seu GitHub é seu portfólio** — quando aparecer uma oportunidade, você tem algo concreto pra mostrar
 
 ---
 
 ## 🎯 Checkpoints
 
-**Fim da Fase 1 (mês 3):**
-- [ ] VM na Oracle Cloud rodando e acessível via SSH e VSCode ✅
-- [ ] Script de verificação rodando automaticamente via cron
-- [ ] Repositório GitHub com commits organizados
+**Fim da Fase 1 ✅**
+- [x] VM na Oracle Cloud rodando e acessível via SSH
+- [x] Exercícios Python (ex01 ao ex04) concluídos e no GitHub
+- [x] Conhecimento sólido de Linux, Git e Python aplicado a infra
+- [x] Repositório com commits organizados e `.gitignore` configurado
 
-**Fim da Fase 2 (mês 7):**
-- [ ] Aplicação rodando dentro de container Docker na VM
+**Fim da Fase 2 (mês 7)**
+- [ ] Aplicação rodando em container Docker na VM
 - [ ] Pipeline CI/CD no GitHub Actions funcionando
 - [ ] Testes automatizados passando no pipeline
 
-**Fim da Fase 3 (mês 12):**
+**Fim da Fase 3 (mês 12)**
 - [ ] Stack Prometheus + Grafana rodando na VM
 - [ ] Dashboard com métricas reais acessível pelo browser
-- [ ] Base suficiente pra uma entrevista de DevOps Jr / SRE Jr
+- [ ] Base pra entrevista de DevOps Jr / SRE Jr
 
 ---
 
-*Criado em abril de 2026 · Versione este roadmap no seu GitHub e atualize conforme avançar!*
+*Criado em abril de 2026 · Atualizado após conclusão da Fase 1*  
+*Versione este roadmap no seu GitHub e atualize conforme avançar!*
