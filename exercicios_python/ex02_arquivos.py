@@ -162,23 +162,21 @@ with open("servidores.txt", "r") as entrada, open("relatorio.txt", "w") as saida
 
 def gerar_log(nivel, mensagem):
 
-    with open("gerar_log.txt", "a") as f:
+    with open("sistema.log", "a") as f:
         f.write(f"[{data_hora}] {nivel} {mensagem}\n")
 
-gerar_log("INFO", "Servidor Online.")
-gerar_log("WARNING", "CPU com uso acima de 85%!")
-gerar_log("ERROR", "Erro para inicializar os serviços!")
-gerar_log("INFO", "Servidor Offline")
-gerar_log("WARNING", "Uso de momória acima de 80%")
-gerar_log("ERROR", "texto da mensagem")
+gerar_log("INFO","Servidor Online!")
+gerar_log("WARNING","Uso de CPU em 90%!")
+gerar_log("ERROR","Serviço inoperante!")
+gerar_log("ERROR","DLL não encontrada!")
+gerar_log("WARNING","Uso de memória em 85%!")
+gerar_log("INFO","Servidor Offline!")
 
-
-with open("gerar_log.txt", "r") as f:
+with open("sistema.log", "r") as f:
 
     linhas = f.readlines()
-    
     for linha in linhas:
         linha = linha.strip()
-        
+
         if "ERROR" in linha:
             print(linha)
