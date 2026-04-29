@@ -126,7 +126,7 @@ with open("log.txt", "r") as f:
         if "WARNING" in linha:
             warning +=1
 
-    print(f"INFO:{info}\n WARNING:{warning}")
+print(f"INFO:{info}\n WARNING:{warning}")
 
 # ------------------------------------------------------------
 # NÍVEL 3 — Combinando leitura e escrita
