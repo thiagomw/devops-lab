@@ -16,7 +16,7 @@ Redes (teoria)       VM na Oracle Cloud      Containers reais      Logs centrali
 
 > **Como usar este roadmap:**  
 > Cada fase tem: material de estudo → checklist de habilidades → cenário prático em VM real.  
-> Estude o material, pratique os exercícios do checklist, depois execute o cenário.  
+> Os cenários ficam em suas respectivas pastas com enunciado, dicas e gabarito recolhível.  
 > Versione tudo no GitHub desde o primeiro dia — isso vira seu portfólio.
 
 ---
@@ -37,7 +37,7 @@ A Oracle Cloud Free Tier oferece 2 VMs permanentemente gratuitas — sem prazo d
    - **SSH Keys:** gere um par de chaves ou faça upload da sua chave pública
 4. Na seção **Primary VNIC:**
    - Crie uma nova VCN (pode usar o nome gerado ou `devops-lab-vcn`)
-   - Em **Public IP type**, selecione **Ephemeral public IP** — sem isso a VM não terá IP público
+   - Em **Public IP type**, selecione **Ephemeral public IP**
    - Se esquecer durante a criação: **Instance → Instance access → ephemeral public IP**
 5. Clique em **Create** — a VM sobe em ~2 minutos
 6. Anote o IP público da VM
@@ -55,8 +55,8 @@ ssh ubuntu@SEU_IP_PUBLICO -i sua_chave_privada.key
 ```
 
 > No Windows, use o **Windows Terminal** ou **VSCode com extensão Remote SSH**.  
-> O Remote SSH abre uma nova janela do VSCode conectada à VM — é o comportamento esperado.  
-> O canto inferior esquerdo mostra `SSH: devops-lab` confirmando a conexão.  
+> O Remote SSH abre uma nova janela do VSCode conectada à VM — comportamento esperado.  
+> Canto inferior esquerdo mostra `SSH: devops-lab` confirmando a conexão.  
 > Use `` Ctrl+` `` pra abrir o terminal da VM direto no VSCode.
 
 ### 2. Crie sua conta no GitHub
@@ -154,7 +154,7 @@ sudo groupadd desenvolvedores           # cria grupo
 sudo usermod -aG desenvolvedores user   # adiciona usuário ao grupo
 # -a = append (não remove de outros grupos)
 # -G = grupos suplementares
-# SEMPRE use -aG juntos — só -G remove o usuário de todos os outros grupos
+# SEMPRE use -aG juntos — só -G remove de todos os outros grupos
 groups usuario                          # lista grupos do usuário
 ```
 
@@ -164,7 +164,7 @@ ps aux              # lista todos os processos
 top                 # monitor em tempo real (q pra sair, k pra matar)
 kill PID            # encerra processo
 kill -9 PID         # força encerramento
-sleep 60 &          # roda em background — terminal vai exibir o PID
+sleep 60 &          # roda em background — terminal exibe o PID
 ```
 
 #### tail e head
@@ -190,17 +190,17 @@ sudo apt install pacote -y # instala
 sudo apt remove pacote     # remove
 ```
 
-> 💡 Sempre rode `apt update` antes de instalar — garante a versão mais recente.  
+> 💡 Sempre rode `apt update` antes de instalar.  
 > O `-y` evita confirmação manual — útil em scripts automatizados.
 
 #### Scripts Bash
 ```bash
-#!/bin/bash           # shebang — define o interpretador (primeira linha do script)
+#!/bin/bash           # shebang — define o interpretador (primeira linha)
 chmod 755 script.sh   # dá permissão de execução
 ./script.sh           # executa
 ```
 
-#### Buscar ajuda sobre comandos
+#### Buscar ajuda
 ```bash
 man chmod       # manual completo (setas pra navegar, / pra buscar, q pra sair)
 chmod --help    # resumo rápido
@@ -220,9 +220,9 @@ git config --global user.email "seu@email.com"
 
 # Fluxo básico
 git clone https://github.com/usuario/repo.git
-git status                      # estado dos arquivos
-git add arquivo.py              # adiciona arquivo específico ao stage
-git add .                       # adiciona todos os arquivos modificados
+git status
+git add arquivo.py              # arquivo específico
+git add .                       # todos os arquivos modificados
 git commit -m "feat: mensagem"
 git push origin main
 git pull origin main
@@ -235,12 +235,12 @@ git branch -d nova-branch       # deleta branch local
 git log --oneline               # histórico resumido
 ```
 
-> 💡 **Stage:** arquivos modificados → `git add` (stage) → `git commit` (histórico). O stage te dá controle sobre o que entra em cada commit — você pode commitar arquivos separados em commits diferentes.
+> 💡 **Stage:** modificado → `git add` (stage) → `git commit` (histórico).
 
-> ⚠️ O GitHub não aceita senha — use **Personal Access Token**: Settings → Developer Settings → Personal Access Tokens → Tokens Classic → marcar `repo` → usar no lugar da senha no push.
+> ⚠️ GitHub não aceita senha — use **Personal Access Token**: Settings → Developer Settings → Personal Access Tokens → Tokens Classic → marcar `repo` → usar no lugar da senha no push.
 
 #### .gitignore — Boa Prática Importante
-Arquivos gerados pelos scripts (`.txt`, `.log`) **não devem** ir pro repositório — só código fonte.
+Arquivos gerados pelos scripts **não devem** ir pro repositório — só código fonte.
 
 ```bash
 # .gitignore
@@ -262,15 +262,12 @@ git push origin main
 
 ### 📖 Referência Rápida — Python
 
-#### Boas práticas aprendidas na prática
-
 ```python
 # 1. Imports sempre no topo do arquivo
 import os, subprocess, socket, datetime, time
 import psutil, requests
 
-# 2. Separação de responsabilidades — função com uma responsabilidade só
-#    Loop fica FORA da função, não dentro
+# 2. Separação de responsabilidades — loop FORA da função
 def checar_host(host, porta, timeout=3):
     try:
         socket.create_connection((host, porta), timeout=timeout)
@@ -278,130 +275,46 @@ def checar_host(host, porta, timeout=3):
     except Exception:
         return False
 
-for host, porta in lista_hosts:       # loop fora
+for host, porta in lista_hosts:
     resultado = checar_host(host, porta)
 
-# 3. if __name__ == "__main__" — só roda quando executado diretamente
-#    Se outro script importar este arquivo, esse bloco não executa
+# 3. if __name__ == "__main__"
 if __name__ == "__main__":
     checar_host("8.8.8.8", 53)
 
-# 4. encoding="utf-8" em todo open() — evita quebra de acentos
+# 4. encoding="utf-8" em todo open()
 with open("arquivo.txt", "a", encoding="utf-8") as f:
     f.write("conteúdo\n")
-    # f.write() NÃO quebra linha automaticamente — use \n explícito
+    # f.write() NÃO quebra linha automaticamente — use \n
     # print() JÁ quebra linha automaticamente
 
 # 5. .strip() precisa guardar o resultado
 linha = linha.strip()   # correto
-linha.strip()           # não faz nada — resultado é descartado
+linha.strip()           # não faz nada
 
 # 6. Aspas dentro de f-string — defina a variável antes
 conectividade = "OK" if code == 200 else "INACESSÍVEL"
-f"Status: {conectividade}"   # correto
-# f"Status: {"OK" if ...}"   # SyntaxError em Python < 3.12
+f"Status: {conectividade}"
 
-# 7. subprocess — comando como lista, não string
-subprocess.run(["ls", "-la"], ...)    # correto
-subprocess.run(["ls -la"], ...)       # errado — tenta achar programa "ls -la"
-resultado.returncode == 0             # 0 = sucesso, outro valor = erro
-resultado.stdout                      # saída do comando
+# 7. subprocess — comando como lista
+subprocess.run(["ls", "-la"], capture_output=True, text=True)
+resultado.returncode == 0   # 0 = sucesso
+resultado.stdout
 
-# 8. Valor padrão em parâmetro de função
-def funcao(host, porta, timeout=3):   # timeout=3 é usado quando não passado
+# 8. Valor padrão em parâmetro
+def funcao(host, porta, timeout=3):
     pass
 funcao("8.8.8.8", 53)       # timeout = 3 (padrão)
-funcao("8.8.8.8", 53, 10)   # timeout = 10 (sobrescreve o padrão)
-```
-
-#### Módulos essenciais
-```python
-# os
-os.getcwd()                         # diretório atual
-os.makedirs("pasta", exist_ok=True) # cria diretório recursivo
-os.listdir(".")                     # lista arquivos
-os.path.exists("pasta")            # verifica se existe
-
-# subprocess
-r = subprocess.run(["df", "-h"], capture_output=True, text=True)
-r.stdout.splitlines()               # divide saída em lista de linhas
-
-# psutil
-psutil.cpu_percent(interval=1)
-psutil.virtual_memory().percent
-psutil.virtual_memory().total / (1024**3)  # bytes → GB
-psutil.disk_usage('/').percent
-processos = psutil.process_iter(['pid', 'name', 'memory_percent'])
-top5 = sorted(processos, key=lambda p: p.info['memory_percent'], reverse=True)[:5]
-
-# requests
-r = requests.get("https://url.com")
-r.status_code                       # 200 = OK
-r.json().get("campo")               # acessa campo do JSON
+funcao("8.8.8.8", 53, 10)   # timeout = 10 (sobrescreve)
 ```
 
 ---
 
 ### 🟢 CENÁRIO 1 — Verificador de conectividade rodando na VM
 
-**O que você vai praticar:** Linux na VM, Python com `socket`, Git, `cron`
+📁 **[cenario-01/cenario-01.md](./cenario-01/cenario-01.md)**
 
-**Passo 1 — Conecte na VM e prepare o ambiente**
-```bash
-ssh ubuntu@SEU_IP_PUBLICO -i sua_chave.key
-sudo apt update && sudo apt upgrade -y
-sudo apt install python3 python3-pip git -y
-```
-
-**Passo 2 — Clone e prepare o projeto**
-```bash
-git clone https://github.com/SEU_USUARIO/devops-lab.git
-cd devops-lab && mkdir cenario-01 && cd cenario-01
-```
-
-**Passo 3 — Crie o script**
-```python
-# check_hosts.py
-import socket, datetime, os
-
-hosts = [
-    {"name": "Google DNS",   "host": "8.8.8.8",    "port": 53},
-    {"name": "Cloudflare",   "host": "1.1.1.1",    "port": 53},
-    {"name": "GitHub",       "host": "github.com", "port": 443},
-    {"name": "Oracle Cloud", "host": "oracle.com", "port": 443},
-]
-
-timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-results = []
-
-for h in hosts:
-    try:
-        sock = socket.create_connection((h["host"], h["port"]), timeout=3)
-        sock.close()
-        status, icon = "UP", "✅"
-    except (socket.timeout, ConnectionRefusedError, OSError):
-        status, icon = "DOWN", "❌"
-
-    result = f"[{timestamp}] {icon} {h['name']} ({h['host']}:{h['port']}) — {status}"
-    results.append(result)
-    print(result)
-
-with open("check_report.txt", "a", encoding="utf-8") as f:
-    f.write("\n".join(results) + "\n\n")
-```
-
-**Passo 4 — Agende com cron**
-```bash
-python3 check_hosts.py
-crontab -e
-# Adicione: */5 * * * * python3 /home/ubuntu/devops-lab/cenario-01/check_hosts.py
-```
-
-**Passo 5 — Versione**
-```bash
-cd ~/devops-lab
-git add . && git commit -m "feat: cenario-01 - verificador de conectividade" && git push origin main
-```
+O que você vai praticar: Linux na VM · Python com `socket` · Git · `cron`
 
 ---
 
@@ -429,34 +342,11 @@ git add . && git commit -m "feat: cenario-01 - verificador de conectividade" && 
 - [ ] Subir e derrubar stack com `docker-compose up/down`
 - [ ] Criar um pipeline no GitHub Actions que roda testes automaticamente
 
----
-
 ### 🟡 CENÁRIO 2 — Aplicação containerizada com pipeline CI/CD
 
-**Passo 1 — Instale Docker na VM**
-```bash
-curl -fsSL https://get.docker.com -o get-docker.sh && sudo sh get-docker.sh
-sudo usermod -aG docker ubuntu
-# Saia e reconecte — necessário pra aplicar o grupo docker
-exit && ssh ubuntu@SEU_IP -i sua_chave.key
-docker run hello-world
-sudo apt install docker-compose -y
-```
+📁 **[cenario-02/cenario-02.md](./cenario-02/cenario-02.md)**
 
-**Passo 2 — Crie o projeto**
-```bash
-cd ~/devops-lab && mkdir cenario-02 && cd cenario-02
-```
-
-Crie `monitor.py`, `test_monitor.py`, `Dockerfile` e `.github/workflows/ci.yml` conforme estrutura do roadmap.
-
-**Passo 3 — Build e teste**
-```bash
-docker build -t meu-monitor .
-docker run meu-monitor
-git add . && git commit -m "feat: cenario-02 - monitor containerizado com CI/CD" && git push origin main
-# GitHub → aba Actions → veja o pipeline rodar em tempo real
-```
+O que você vai praticar: Docker · docker-compose · GitHub Actions · testes com `unittest`
 
 ---
 
@@ -465,11 +355,11 @@ git add . && git commit -m "feat: cenario-02 - monitor containerizado com CI/CD"
 
 ### 📚 Material de Estudo
 
-| Material | Tipo | Onde acessar |
-|---|---|---|
-| TechWorld with Nana — Prometheus | YouTube gratuito | Buscar "Prometheus Tutorial TechWorld Nana" |
-| Grafana Getting Started | Docs oficiais | [grafana.com/docs](https://grafana.com/docs) |
-| Prometheus Docs | Docs oficiais | [prometheus.io/docs](https://prometheus.io/docs) |
+| Material | Tipo | Onde acessar | Foco |
+|---|---|---|---|
+| TechWorld with Nana — Prometheus | YouTube gratuito | Buscar "Prometheus Tutorial TechWorld Nana" | Playlist completa |
+| Grafana Getting Started | Docs oficiais | [grafana.com/docs](https://grafana.com/docs) | Setup e primeiros dashboards |
+| Prometheus Docs | Docs oficiais | [prometheus.io/docs](https://prometheus.io/docs) | Conceitos e configuração |
 
 ### ✅ Checklist de Habilidades
 
@@ -479,25 +369,11 @@ git add . && git commit -m "feat: cenario-02 - monitor containerizado com CI/CD"
 - [ ] Criar dashboard no Grafana com métricas reais
 - [ ] Configurar alertas por threshold
 
----
-
 ### 🔴 CENÁRIO 3 — Stack completa de monitoramento na VM
 
-Stack: app Python expondo métricas → Prometheus coletando → Grafana visualizando.
+📁 **[cenario-03/cenario-03.md](./cenario-03/cenario-03.md)**
 
-**Portas a liberar no firewall da Oracle Cloud:**
-- Networking → VCN → Security Lists → Ingress Rules → TCP `8000`, `9090`, `3000`
-
-```bash
-# Também libera no firewall da VM
-sudo iptables -I INPUT -p tcp --dport 3000 -j ACCEPT
-sudo iptables -I INPUT -p tcp --dport 9090 -j ACCEPT
-sudo iptables -I INPUT -p tcp --dport 8000 -j ACCEPT
-
-docker-compose up --build -d
-```
-
-Acesse: `http://SEU_IP:3000` (Grafana) → Data Sources → Prometheus → `http://prometheus:9090`
+O que você vai praticar: `prometheus_client` · docker-compose · Grafana na prática
 
 ---
 
@@ -529,7 +405,7 @@ Acesse: `http://SEU_IP:3000` (Grafana) → Data Sources → Prometheus → `http
 
 Seu ambiente tem processos consolidados (ServiceNow, alertas estruturados, equipes especializadas). O valor do trabalho atual é observar e absorver contexto:
 
-1. **Observe como os incidentes de infra são tratados** — você vê o resultado, tente entender o que N2/N3 fez
+1. **Observe como os incidentes de infra são tratados** — tente entender o que N2/N3 fez
 2. **Anote termos técnicos** que aparecem nos chamados — pesquise depois
 3. **Aproxime-se dos times de infra e cloud** — demonstre interesse genuíno
 4. **Seu GitHub é seu portfólio** — quando aparecer uma oportunidade, você tem algo concreto pra mostrar
