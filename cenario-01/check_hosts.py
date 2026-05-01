@@ -1,34 +1,28 @@
-# check_hosts.py
 import socket
 import datetime
 import os
 
 hosts = [
-    {"name": "Google DNS",     "host": "8.8.8.8",    "port": 53},
-    {"name": "Cloudflare DNS", "host": "1.1.1.1",    "port": 53},
-    {"name": "GitHub",         "host": "github.com", "port": 443},
-    {"name": "Oracle Cloud",   "host": "oracle.com", "port": 443},
+    {"name": "Google DNS", "host": "8.8.8.8", "port": 53},
+    {"name": "Cloudflare", "host": "1.1.1.1", "port": 53},
+    {"name": "GitHub", "host": "github.csom", "port": 443},
+    {"name": "Oracle Cloud", "host": "oracle.com", "port": 443},
 ]
 
-results = []
-timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+data_hora = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+resultados = []
 
-for h in hosts:
-    try:
-        sock = socket.create_connection((h["host"], h["port"]), timeout=3)
-        sock.close()
-        status = "UP"
-        icon = "✅"
-    except (socket.timeout, ConnectionRefusedError, OSError):
-        status = "DOWN"
-        icon = "❌"
+with open ("/home/ubuntu/devops-lab/cenario-01/check_report.log", "a") as f:
+    for host in hosts:
+        try:
+            conexao = socket.create_connection((host["host"], host["port"]), timeout=3)
+            conexao.close()
+            status, icone = "UP", "✅"
+        except Exception:
+            status, icone = "DOWN", "❌"
 
-    result = f"[{timestamp}] {icon} {h['name']} ({h['host']}:{h['port']}) — {status}"
-    results.append(result)
-    print(result)
+        resultado = f"[{data_hora}] {icone} {host['name']}:{host['port']} — {status}"
+        resultados.append(resultado)
+        print(resultado)
 
-log_file = os.path.join(os.path.dirname(__file__), "check_report.txt")
-with open(log_file, "a", encoding="utf-8") as f:
-    f.write("\n".join(results) + "\n\n")
-
-print(f"\nRelatório salvo em check_report.txt")
+        f.write(f"{resultado}\n")
