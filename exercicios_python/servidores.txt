@@ -1,5 +1,0 @@
-web-01
-web-02
-db-01
-db-02
-cache-01
