@@ -152,9 +152,19 @@ python3 cenario-01/check_hosts.py
 
 ## 📚 Recursos de Estudo
 
+**Roadmap**
+- [roadmap.sh/devops](https://roadmap.sh/devops) — guia oficial de estudos seguido neste lab
+
+**Linux & Git**
 - [Linux Journey](https://linuxjourney.com)
 - [Pro Git Book (PT-BR)](https://git-scm.com/book/pt-br/v2)
+
+**Python**
 - [Python para Zumbis — YouTube](https://www.youtube.com/playlist?list=PLUukMN0DTKCtbzhbYe2jdF4cr8MOWClXc)
+
+**Docker & Kubernetes**
 - [TechWorld with Nana — Docker, Kubernetes, DevOps](https://www.youtube.com/@TechWorldwithNana)
 - [Docker Getting Started](https://docs.docker.com/get-started/)
+
+**Observabilidade**
 - [Prometheus Docs](https://prometheus.io/docs/introduction/overview/)
