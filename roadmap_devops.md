@@ -1,7 +1,19 @@
 # 🚀 Roadmap DevOps — Do Service Desk ao DevOps Engineer
-**Perfil:** Formado em Redes (FIAP) · Python iniciante · Service Desk em empresa de IA  
-**Dedicação:** 1–2h/dia (dias intensos de 5h são seus dias de laboratório)  
+
+**Perfil:** Formado em Redes (FIAP) · Python iniciante · Service Desk em empresa de IA
+**Dedicação:** 1–2h/dia (dias intensos de 5h são seus dias de laboratório)
 **Infraestrutura:** Oracle Cloud Free Tier + Ubuntu 22.04 LTS
+
+---
+
+## 🧭 Como Usar Este Repositório
+
+Se você caiu aqui vindo de fora (LinkedIn, Google, etc.), aqui vai o mapa rápido:
+
+- **Quer ver o que já está pronto?** Comece pelo [`README.md`](./README.md) — ele lista cenários e exercícios com exemplo de execução.
+- **Quer entender o plano de estudos?** Este arquivo. Cada fase tem material, checklist e cenário.
+- **Quer replicar o setup?** A seção [Preparação](#️-preparação--antes-de-começar-semana-0) tem o passo a passo da VM Oracle Cloud gratuita.
+- **Quer só as cheatsheets?** Pula direto pras [Referências Rápidas](#-referência-rápida--linux) — Linux, Git e Python já testados na prática.
 
 ---
 
@@ -14,9 +26,9 @@ Python iniciante     Bash scripting          GitHub Actions        Prometheus + 
 Redes (teoria)       VM na Oracle Cloud      Containers reais      Logs centralizados     SRE básico
 ```
 
-> **Como usar este roadmap:**  
-> Cada fase tem: material de estudo → checklist de habilidades → cenário prático em VM real.  
-> Os cenários ficam em suas respectivas pastas com enunciado, dicas e gabarito recolhível.  
+> **Como usar este roadmap:**
+> Cada fase tem: material de estudo → checklist de habilidades → cenário prático em VM real.
+> Os cenários ficam em suas respectivas pastas com enunciado, dicas e gabarito recolhível.
 > Versione tudo no GitHub desde o primeiro dia — isso vira seu portfólio.
 
 ---
@@ -28,43 +40,53 @@ Redes (teoria)       VM na Oracle Cloud      Containers reais      Logs centrali
 A Oracle Cloud Free Tier oferece 2 VMs permanentemente gratuitas — sem prazo de expiração.
 
 **Passo a passo:**
+
 1. Acesse [cloud.oracle.com](https://cloud.oracle.com) e crie uma conta gratuita
 2. No painel, vá em **Compute → Instances → Create Instance**
 3. Configure:
-   - **Nome:** `devops-lab`
-   - **Image:** Ubuntu 22.04 LTS
-   - **Shape:** `VM.Standard.E2.1.Micro` (gratuito)
-   - **SSH Keys:** gere um par de chaves ou faça upload da sua chave pública
+  - **Nome:** `devops-lab`
+  - **Image:** Ubuntu 22.04 LTS
+  - **Shape:** `VM.Standard.E2.1.Micro` (gratuito)
+  - **SSH Keys:** gere um par de chaves ou faça upload da sua chave pública
 4. Na seção **Primary VNIC:**
-   - Crie uma nova VCN (pode usar o nome gerado ou `devops-lab-vcn`)
-   - Em **Public IP type**, selecione **Ephemeral public IP**
-   - Se esquecer durante a criação: **Instance → Instance access → ephemeral public IP**
+  - Crie uma nova VCN (pode usar o nome gerado ou `devops-lab-vcn`)
+  - Em **Public IP type**, selecione **Ephemeral public IP**
+  - Se esquecer durante a criação: **Instance → Instance access → ephemeral public IP**
 5. Clique em **Create** — a VM sobe em ~2 minutos
 6. Anote o IP público da VM
 
 > 💡 **Sobre VCN e VNIC:**
+>
 > - **VCN (Virtual Cloud Network)** → sua rede privada na nuvem, equivalente a uma LAN virtualizada
 > - **Subnet** → subdivisão da VCN, como subnets de redes tradicionais
 > - **VNIC (Virtual Network Interface Card)** → a placa de rede virtual da VM, equivalente a uma NIC física
 > - **IP Público** → o que você usa pra conectar via SSH da internet
 > - **IP Privado** → comunicação interna entre recursos na mesma VCN
 
+> ⚠️ **Firewall em duas camadas — pega muita gente:**
+> A Oracle tem firewall na VM (`ufw`/`firewalld`) **e** firewall na cloud (Security List da VCN).
+> Se você abriu porta na VM mas não acessa de fora, provavelmente esqueceu da Security List:
+> **Networking → VCN → Sub-rede → Security List → Add Ingress Rule** com a porta que precisa.
+
 **Conectar via SSH:**
+
 ```bash
 ssh ubuntu@SEU_IP_PUBLICO -i sua_chave_privada.key
 ```
 
-> No Windows, use o **Windows Terminal** ou **VSCode com extensão Remote SSH**.  
-> O Remote SSH abre uma nova janela do VSCode conectada à VM — comportamento esperado.  
-> Canto inferior esquerdo mostra `SSH: devops-lab` confirmando a conexão.  
+> No Windows, use o **Windows Terminal** ou **VSCode com extensão Remote SSH**.
+> O Remote SSH abre uma nova janela do VSCode conectada à VM — comportamento esperado.
+> Canto inferior esquerdo mostra `SSH: devops-lab` confirmando a conexão.
 > Use `` Ctrl+` `` pra abrir o terminal da VM direto no VSCode.
 
 ### 2. Crie sua conta no GitHub
+
 - Acesse [github.com](https://github.com) e crie uma conta
 - Crie um repositório chamado `devops-lab` — público
 - Configure o `.gitignore` desde o início (veja seção Git abaixo)
 
 ### 3. Instale no seu computador local
+
 - [VSCode](https://code.visualstudio.com/)
 - [Git](https://git-scm.com/)
 - Python 3.11+ ([python.org](https://python.org))
@@ -73,20 +95,22 @@ ssh ubuntu@SEU_IP_PUBLICO -i sua_chave_privada.key
 ---
 
 ## 🗺️ FASE 1 — Linux, Git e Python na Prática ✅
+
 > *"Aprender as ferramentas que todo DevOps usa todo dia"*
 
 ### 📚 Material de Estudo
 
-| Material | Tipo | Onde acessar | Foco |
-|---|---|---|---|
-| Linux Journey | Site gratuito | [linuxjourney.com](https://linuxjourney.com) | Módulos: Grasshopper e Journeyman |
-| Pro Git Book (PT-BR) | Livro gratuito | [git-scm.com/book/pt-br/v2](https://git-scm.com/book/pt-br/v2) | Capítulos 1, 2 e 3 |
-| Python para Zumbis | YouTube gratuito | Buscar "Python para Zumbis" no YouTube | Aulas 1 a 8 |
-| Bash Scripting Tutorial | Site gratuito | [ryanstutorials.net/bash-scripting-tutorial](https://ryanstutorials.net/bash-scripting-tutorial) | Do início ao módulo 5 |
+| Material                | Tipo             | Onde acessar                                                                                     | Foco                              |
+| ----------------------- | ---------------- | ------------------------------------------------------------------------------------------------ | --------------------------------- |
+| Linux Journey           | Site gratuito    | [linuxjourney.com](https://linuxjourney.com)                                                     | Módulos: Grasshopper e Journeyman |
+| Pro Git Book (PT-BR)    | Livro gratuito   | [git-scm.com/book/pt-br/v2](https://git-scm.com/book/pt-br/v2)                                   | Capítulos 1, 2 e 3                |
+| Python para Zumbis      | YouTube gratuito | Buscar "Python para Zumbis" no YouTube                                                           | Aulas 1 a 8                       |
+| Bash Scripting Tutorial | Site gratuito    | [ryanstutorials.net/bash-scripting-tutorial](https://ryanstutorials.net/bash-scripting-tutorial) | Do início ao módulo 5             |
 
 ### ✅ Checklist de Habilidades
 
 **Linux — praticado na VM via SSH:**
+
 - [x] Navegar entre diretórios (`cd`, `ls`, `pwd`)
 - [x] Criar, mover, copiar e deletar arquivos (`mkdir`, `mv`, `cp`, `rm`)
 - [x] Editar arquivos com `nano`
@@ -98,6 +122,7 @@ ssh ubuntu@SEU_IP_PUBLICO -i sua_chave_privada.key
 - [x] Usar operadores de redirecionamento `>` e `>>`
 
 **Git:**
+
 - [x] `git init`, `add`, `commit`, `push`, `pull`
 - [x] Criar e mergear branches
 - [x] Escrever um `README.md`
@@ -105,6 +130,7 @@ ssh ubuntu@SEU_IP_PUBLICO -i sua_chave_privada.key
 - [x] Configurar `.gitignore` corretamente
 
 **Python:**
+
 - [x] Funções, listas, dicionários, loops, condições
 - [x] Ler e escrever arquivos com `open()`
 - [x] Usar os módulos `os`, `subprocess`, `socket`
@@ -115,6 +141,7 @@ ssh ubuntu@SEU_IP_PUBLICO -i sua_chave_privada.key
 ### 📖 Referência Rápida — Linux
 
 #### Permissões
+
 ```
 drwxr-xr-x
 ↑ ↑↑↑ ↑↑↑ ↑↑↑
@@ -130,14 +157,14 @@ x = 1 (execução)
 
 **Tabela chmod numérico:**
 
-| Número | Permissão | Quando usar |
-|---|---|---|
-| `777` | todos fazem tudo | Evitar — muito permissivo |
-| `755` | dono tudo, outros leem/executam | Diretórios, scripts |
-| `644` | dono lê/escreve, outros só leem | Arquivos comuns |
-| `700` | só o dono acessa | Diretórios com dados sensíveis |
-| `600` | só o dono lê/escreve | Chaves SSH, arquivos sensíveis |
-| `400` | só o dono lê | Chaves privadas |
+| Número | Permissão                       | Quando usar                    |
+| ------ | ------------------------------- | ------------------------------ |
+| `777`  | todos fazem tudo                | Evitar — muito permissivo      |
+| `755`  | dono tudo, outros leem/executam | Diretórios, scripts            |
+| `644`  | dono lê/escreve, outros só leem | Arquivos comuns                |
+| `700`  | só o dono acessa                | Diretórios com dados sensíveis |
+| `600`  | só o dono lê/escreve            | Chaves SSH, arquivos sensíveis |
+| `400`  | só o dono lê                    | Chaves privadas                |
 
 ```bash
 chmod 755 arquivo.txt           # numérico
@@ -149,6 +176,7 @@ chown ubuntu:ubuntu arquivo.txt # muda dono e grupo
 > ⚠️ A chave privada SSH deve ter permissão `400` ou `600` — o SSH recusa conexão se estiver mais aberto.
 
 #### Grupos
+
 ```bash
 sudo groupadd desenvolvedores           # cria grupo
 sudo usermod -aG desenvolvedores user   # adiciona usuário ao grupo
@@ -159,6 +187,7 @@ groups usuario                          # lista grupos do usuário
 ```
 
 #### Processos
+
 ```bash
 ps aux              # lista todos os processos
 top                 # monitor em tempo real (q pra sair, k pra matar)
@@ -168,6 +197,7 @@ sleep 60 &          # roda em background — terminal exibe o PID
 ```
 
 #### tail e head
+
 ```bash
 head -n 5 arquivo.log   # primeiras 5 linhas
 tail -n 5 arquivo.log   # últimas 5 linhas
@@ -177,12 +207,14 @@ tail -f arquivo.log     # segue em tempo real — Ctrl+C pra sair
 > 💡 `tail -f` é o mais usado no dia a dia pra monitorar logs de servidor em tempo real.
 
 #### Redirecionamento
+
 ```bash
 echo "linha 1" > arquivo.txt   # sobrescreve (cria se não existir)
 echo "linha 2" >> arquivo.txt  # adiciona ao final (não apaga)
 ```
 
 #### apt
+
 ```bash
 sudo apt update            # atualiza lista (não instala nada)
 sudo apt upgrade -y        # instala atualizações
@@ -190,10 +222,11 @@ sudo apt install pacote -y # instala
 sudo apt remove pacote     # remove
 ```
 
-> 💡 Sempre rode `apt update` antes de instalar.  
+> 💡 Sempre rode `apt update` antes de instalar.
 > O `-y` evita confirmação manual — útil em scripts automatizados.
 
 #### Scripts Bash
+
 ```bash
 #!/bin/bash           # shebang — define o interpretador (primeira linha)
 chmod 755 script.sh   # dá permissão de execução
@@ -201,6 +234,7 @@ chmod 755 script.sh   # dá permissão de execução
 ```
 
 #### Buscar ajuda
+
 ```bash
 man chmod       # manual completo (setas pra navegar, / pra buscar, q pra sair)
 chmod --help    # resumo rápido
@@ -236,13 +270,13 @@ git log --oneline               # histórico resumido
 ```
 
 > 💡 **Stage:** modificado → `git add` (stage) → `git commit` (histórico).
-
 > ⚠️ GitHub não aceita senha — use **Personal Access Token**: Settings → Developer Settings → Personal Access Tokens → Tokens Classic → marcar `repo` → usar no lugar da senha no push.
 
 #### .gitignore — Boa Prática Importante
+
 Arquivos gerados pelos scripts **não devem** ir pro repositório — só código fonte.
 
-```bash
+```gitignore
 # .gitignore
 *.txt
 *.log
@@ -319,16 +353,17 @@ O que você vai praticar: Linux na VM · Python com `socket` · Git · `cron`
 ---
 
 ## 🗺️ FASE 2 — Docker e CI/CD (Meses 3–7)
+
 > *"Containerizar aplicações e automatizar deploy"*
 
 ### 📚 Material de Estudo
 
-| Material | Tipo | Onde acessar | Foco |
-|---|---|---|---|
-| Docker Getting Started | Docs oficiais | [docs.docker.com/get-started](https://docs.docker.com/get-started) | Partes 1 a 6 |
-| TechWorld with Nana — Docker | YouTube gratuito | Buscar "Docker Tutorial for Beginners TechWorld Nana" | Playlist completa |
-| GitHub Actions Docs | Docs oficiais | [docs.github.com/en/actions](https://docs.github.com/en/actions) | Quickstart + Using workflows |
-| Play with Docker | Lab gratuito | [labs.play-with-docker.com](https://labs.play-with-docker.com) | Pratique sem instalar nada |
+| Material                     | Tipo             | Onde acessar                                                       | Foco                         |
+| ---------------------------- | ---------------- | ------------------------------------------------------------------ | ---------------------------- |
+| Docker Getting Started       | Docs oficiais    | [docs.docker.com/get-started](https://docs.docker.com/get-started) | Partes 1 a 6                 |
+| TechWorld with Nana — Docker | YouTube gratuito | Buscar "Docker Tutorial for Beginners TechWorld Nana"              | Playlist completa            |
+| GitHub Actions Docs          | Docs oficiais    | [docs.github.com/en/actions](https://docs.github.com/en/actions)   | Quickstart + Using workflows |
+| Play with Docker             | Lab gratuito     | [labs.play-with-docker.com](https://labs.play-with-docker.com)     | Pratique sem instalar nada   |
 
 ### ✅ Checklist de Habilidades
 
@@ -341,25 +376,36 @@ O que você vai praticar: Linux na VM · Python com `socket` · Git · `cron`
 - [ ] Escrever um `docker-compose.yml` com múltiplos serviços
 - [ ] Subir e derrubar stack com `docker-compose up/down`
 - [ ] Criar um pipeline no GitHub Actions que roda testes automaticamente
+- [ ] Publicar imagem no Docker Hub via Actions
+- [ ] Configurar deploy automático via SSH em merge na `main`
 
 ### 🟡 CENÁRIO 2 — Aplicação containerizada com pipeline CI/CD
 
 📁 **[cenario-02/cenario-02.md](./cenario-02/cenario-02.md)**
 
-O que você vai praticar: Docker · docker-compose · GitHub Actions · testes com `unittest`
+**Ideia central:** pegar o `check_hosts.py` do Cenário 01 e levar até deploy contínuo real.
+
+O que você vai praticar:
+
+- `Dockerfile` multi-stage
+- `docker-compose.yml` com volume persistente
+- GitHub Actions com secrets (Docker Hub, SSH da VM)
+- Deploy automático na VM Oracle a cada merge na `main`
+- Testes `unittest` gatilhando o pipeline
 
 ---
 
 ## 🗺️ FASE 3 — Observabilidade (Meses 7–12)
+
 > *"Enxergar o que está acontecendo no ambiente antes que vire problema"*
 
 ### 📚 Material de Estudo
 
-| Material | Tipo | Onde acessar | Foco |
-|---|---|---|---|
-| TechWorld with Nana — Prometheus | YouTube gratuito | Buscar "Prometheus Tutorial TechWorld Nana" | Playlist completa |
-| Grafana Getting Started | Docs oficiais | [grafana.com/docs](https://grafana.com/docs) | Setup e primeiros dashboards |
-| Prometheus Docs | Docs oficiais | [prometheus.io/docs](https://prometheus.io/docs) | Conceitos e configuração |
+| Material                         | Tipo             | Onde acessar                                     | Foco                         |
+| -------------------------------- | ---------------- | ------------------------------------------------ | ---------------------------- |
+| TechWorld with Nana — Prometheus | YouTube gratuito | Buscar "Prometheus Tutorial TechWorld Nana"      | Playlist completa            |
+| Grafana Getting Started          | Docs oficiais    | [grafana.com/docs](https://grafana.com/docs)     | Setup e primeiros dashboards |
+| Prometheus Docs                  | Docs oficiais    | [prometheus.io/docs](https://prometheus.io/docs) | Conceitos e configuração     |
 
 ### ✅ Checklist de Habilidades
 
@@ -378,15 +424,16 @@ O que você vai praticar: `prometheus_client` · docker-compose · Grafana na pr
 ---
 
 ## 🗺️ FASE 4 — Kubernetes e IaC (Meses 12–18)
+
 > *"Orquestrar serviços e provisionar infra com código"*
 
 ### 📚 Material de Estudo
 
-| Material | Tipo | Onde acessar |
-|---|---|---|
-| TechWorld with Nana — Kubernetes | YouTube gratuito | Buscar "Kubernetes Tutorial TechWorld Nana" |
-| Terraform Getting Started | Docs oficiais | [developer.hashicorp.com/terraform/tutorials](https://developer.hashicorp.com/terraform/tutorials) |
-| KodeKloud | Plataforma | [kodekloud.com](https://kodekloud.com) |
+| Material                         | Tipo             | Onde acessar                                                                                       |
+| -------------------------------- | ---------------- | -------------------------------------------------------------------------------------------------- |
+| TechWorld with Nana — Kubernetes | YouTube gratuito | Buscar "Kubernetes Tutorial TechWorld Nana"                                                        |
+| Terraform Getting Started        | Docs oficiais    | [developer.hashicorp.com/terraform/tutorials](https://developer.hashicorp.com/terraform/tutorials) |
+| KodeKloud                        | Plataforma       | [kodekloud.com](https://kodekloud.com)                                                             |
 
 ### ✅ Checklist de Habilidades
 
@@ -398,6 +445,23 @@ O que você vai praticar: `prometheus_client` · docker-compose · Grafana na pr
 - [ ] Provisionar uma VM via Terraform
 
 > O cenário desta fase será detalhado conforme você avança nas anteriores.
+
+---
+
+## 📓 Diário de Bordo — Lições Aprendidas
+
+Espaço pra registrar as pequenas ratoeiras que aparecem na prática. Vale ouro em entrevista, porque mostra que você errou, entendeu e corrigiu.
+
+**Fase 1**
+
+- `socket.create_connection()` sem timeout trava o script por ~30s quando o host não responde. `timeout=3` resolve.
+- Chave SSH com permissão `644` faz o servidor recusar login. `chmod 400` na chave privada.
+- `git rm --cached` remove do repositório sem apagar o arquivo local. Salva-vidas quando você commita `.log` sem querer.
+- Firewall da Oracle Cloud tem duas camadas (VM + Security List da VCN). Abrir só uma não é suficiente.
+
+**Fase 2** — a preencher
+
+**Fase 3** — a preencher
 
 ---
 
@@ -415,22 +479,26 @@ Seu ambiente tem processos consolidados (ServiceNow, alertas estruturados, equip
 ## 🎯 Checkpoints
 
 **Fim da Fase 1 ✅**
+
 - [x] VM na Oracle Cloud rodando e acessível via SSH
 - [x] Exercícios Python (ex01 ao ex04) concluídos e no GitHub
 - [x] Conhecimento sólido de Linux, Git e Python aplicado a infra
 - [x] Repositório com commits organizados e `.gitignore` configurado
 
 **Fim da Fase 2 (mês 7)**
+
 - [ ] Aplicação rodando em container Docker na VM
 - [ ] Pipeline CI/CD no GitHub Actions funcionando
 - [ ] Testes automatizados passando no pipeline
+- [ ] Deploy automático via SSH configurado
 
 **Fim da Fase 3 (mês 12)**
+
 - [ ] Stack Prometheus + Grafana rodando na VM
 - [ ] Dashboard com métricas reais acessível pelo browser
 - [ ] Base pra entrevista de DevOps Jr / SRE Jr
 
 ---
 
-*Criado em abril de 2026 · Atualizado após conclusão da Fase 1*  
+*Criado em abril de 2026 · Atualizado após conclusão da Fase 1*
 *Versione este roadmap no seu GitHub e atualize conforme avançar!*
